@@ -2,65 +2,210 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TinkerBuddy — an AI design coach for Tinkercad</title><link rel="icon" href="https://sanjitkmisra.github.io/tinkerbuddy/icon-128.png">
 <meta name="description" content="TinkerBuddy coaches kids inside Tinkercad: plans their project, points at the right tool, checks each step and explains why. Never does it for them.">
+<meta property="og:title" content="TinkerBuddy — the design coach that never does it for them">
+<meta property="og:description" content="An AI coach inside Tinkercad for kids 8–14. Plans the build, rings the right button, checks each step. Free for families and classes.">
 <style>
-:root{--ink:#1d1f33;--sub:#5d6078;--line:#e5e6f0;--bg:#f6f6fb;--brand:#5446e5;--brand2:#ece9ff}
-*{box-sizing:border-box}body{margin:0;font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg)}
-main{max-width:860px;margin:0 auto;padding:34px 20px 50px}
-.hero{background:linear-gradient(135deg,#5446e5,#7b6cf6);color:#fff;border-radius:18px;padding:30px 30px 26px;margin-bottom:22px}
-.hero h1{margin:0 0 6px;font-size:32px}.hero p{margin:0;font-size:18px;opacity:.95}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:18px 0 24px}
-.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px}
-.card h3{margin:0 0 4px;font-size:16px}.card p{margin:0;color:var(--sub);font-size:14.5px}
-h2{font-size:20px;margin:6px 0 10px}
-.choice{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
-.choice label{flex:1;min-width:220px;border:2px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;background:#fff}
-.choice input{margin-right:8px}.choice label:has(input:checked){border-color:var(--brand);background:var(--brand2)}
-input[type=text]{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;width:100%;max-width:420px}
-button{font:inherit;font-weight:700;padding:11px 18px;border-radius:10px;border:0;background:var(--brand);color:#fff;cursor:pointer;margin-top:12px}
-button:disabled{opacity:.5}.sub{color:var(--sub);font-size:14px}.err{color:#c0322b}
-.secret{font:600 17px ui-monospace,Menlo,monospace;background:#fff8e1;border:1px dashed #e3c46a;padding:10px 12px;border-radius:9px;word-break:break-all;margin:6px 0 12px}
-ol li{margin:6px 0}.hidden{display:none}footer{color:var(--sub);font-size:13px;text-align:center;padding:10px}
-a{color:var(--brand)}
-</style></head><body><main>
-<section class="hero"><h1>TinkerBuddy</h1><p>A friendly design coach inside Tinkercad. It plans the project with your child, points at the right tool, checks each step and explains why — and never does it for them.</p></section>
-<div class="grid">
-  <div class="card"><h3>Plans the project</h3><p>Turns “I want a rocket” into 3–6 parts and shows “Part 2 of 5”.</p></div>
-  <div class="card"><h3>Points and checks</h3><p>Rings the exact Tinkercad button, then notices when the step is done.</p></div>
-  <div class="card"><h3>You see progress</h3><p>A private dashboard: skills practised, steps finished, where they got stuck. Never what they type or say.</p></div>
-</div>
+:root{--ink:#252044;--ink2:#3a3366;--sub:#5b5878;--line:#e4e2f3;--bg:#f8f8fc;--indigo:#5048e5;--indigo5:#6366f1;--lav:#c4b5fd;--lav1:#f1edff;--amber:#fbbf24;--amber1:#fff6dc;--cyan:#67e8f9;--green:#22c55e;
+--display:"Bricolage Grotesque",ui-rounded,system-ui,sans-serif;--body:Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;--r:20px;--shadow:0 1px 2px rgba(37,32,68,.06),0 8px 24px rgba(37,32,68,.08);--shadow2:0 2px 4px rgba(37,32,68,.06),0 24px 60px rgba(37,32,68,.16)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:17px/1.6 var(--body);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+a{color:var(--indigo)}img{max-width:100%;display:block}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+h1,h2,h3{font-family:var(--display);letter-spacing:-.02em;line-height:1.08;margin:0}
+h2{font-size:clamp(30px,4vw,42px);font-weight:800}h3{font-size:21px;font-weight:700}
+.eyebrow{display:inline-block;font:700 13px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--indigo);background:var(--lav1);padding:8px 12px;border-radius:999px;margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;gap:8px;font:700 16px/1 var(--body);padding:15px 22px;border-radius:14px;border:0;cursor:pointer;text-decoration:none;transition:transform .14s cubic-bezier(.22,1,.36,1),box-shadow .14s}
+.btn:hover{transform:translateY(-1px)}.btn:disabled{opacity:.5;transform:none}
+.btn-primary{background:var(--indigo);color:#fff;box-shadow:0 6px 18px rgba(80,72,229,.35)}
+.btn-ghost{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+/* nav */
+nav{position:sticky;top:0;z-index:5;background:rgba(248,248,252,.85);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid transparent}
+nav .wrap{display:flex;align-items:center;gap:22px;height:68px}
+.brand{display:flex;align-items:center;gap:10px;font:800 21px/1 var(--display);color:var(--ink);text-decoration:none;letter-spacing:-.02em}
+.brand img{width:38px;height:38px}
+nav .links{margin-left:auto;display:flex;gap:22px;align-items:center}
+nav .links a{color:var(--ink2);text-decoration:none;font-weight:600;font-size:15px}
+nav .links a.btn{color:#fff;padding:11px 16px;font-size:15px}
+@media(max-width:760px){nav .links a:not(.btn){display:none}}
+/* hero */
+.hero{position:relative;overflow:hidden;padding:56px 0 72px}
+.hero:before{content:"";position:absolute;inset:-30% -10% auto auto;width:780px;height:780px;background:radial-gradient(closest-side,rgba(196,181,253,.55),rgba(196,181,253,0));pointer-events:none}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.02fr 1fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(40px,5.6vw,64px);font-weight:800}
+.hero h1 em{font-style:normal;background:linear-gradient(120deg,var(--indigo),#8b5cf6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{font-size:20px;color:var(--ink2);margin:20px 0 28px;max-width:34em}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.trust{display:flex;gap:18px;flex-wrap:wrap;margin-top:26px;color:var(--sub);font-size:14.5px;font-weight:600}
+.trust span:before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:8px;vertical-align:1px}
+.shot{position:relative}
+.frame{background:#fff;border-radius:18px;box-shadow:var(--shadow2);overflow:hidden;border:1px solid var(--line)}
+.frame .bar{height:30px;background:#f2f1f8;display:flex;align-items:center;gap:6px;padding:0 12px}
+.frame .bar i{width:10px;height:10px;border-radius:50%;background:#dcd9ec}
+.shot .mascot{position:absolute;width:150px;left:-56px;bottom:-40px;filter:drop-shadow(0 14px 22px rgba(37,32,68,.18))}
+.chip{position:absolute;background:#fff;border-radius:14px;box-shadow:var(--shadow);padding:10px 14px;font:700 14px/1.2 var(--body);display:flex;gap:8px;align-items:center}
+.chip.ok{right:-14px;top:38%}.chip.ok b{width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:13px}
+.chip.part{right:22px;top:-16px;background:var(--amber1);box-shadow:0 0 0 1.5px #f3d58a,var(--shadow)}
+@media(max-width:900px){.hero .wrap{grid-template-columns:1fr}.shot .mascot{width:110px;left:-10px;bottom:-34px}.chip.ok{right:6px}}
+/* sections */
+section{padding:76px 0}
+.center{text-align:center;max-width:720px;margin:0 auto 42px}
+.center p{color:var(--sub);font-size:18.5px;margin:14px 0 0}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.step{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column}
+.step .pic{aspect-ratio:16/10;overflow:hidden;background:#eef}.step .pic img{width:100%;height:100%;object-fit:cover;object-position:var(--pos,50% 30%)}
+.step .txt{padding:20px 22px 24px}.step .n{font:800 13px/1 var(--body);color:var(--indigo);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.step p{margin:8px 0 0;color:var(--sub);font-size:16px}
+@media(max-width:900px){.steps{grid-template-columns:1fr}}
+.never{margin:40px auto 0;max-width:760px;display:flex;gap:18px;align-items:center;background:var(--amber1);border-radius:var(--r);padding:20px 24px;box-shadow:0 0 0 1.5px #f3d58a}
+.never img{width:84px;flex:none}.never p{margin:0;font-size:17px}.never b{font-family:var(--display);font-size:19px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.aud{background:#fff;border-radius:var(--r);padding:30px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.aud.teach{background:linear-gradient(160deg,#fff 40%,var(--lav1))}
+.aud ul{padding:0;margin:16px 0 0;list-style:none}.aud li{padding:7px 0 7px 30px;position:relative;color:var(--ink2)}
+.aud li:before{content:"";position:absolute;left:2px;top:13px;width:16px;height:16px;border-radius:5px;background:var(--lav);box-shadow:inset 0 0 0 4px var(--lav1)}
+.aud .dash{margin-top:20px;border-radius:14px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);aspect-ratio:16/9}
+.aud .dash img{width:100%;height:100%;object-fit:cover;object-position:top}
+@media(max-width:900px){.two{grid-template-columns:1fr}}
+.privacy{background:var(--ink);color:#ecebff;border-radius:28px;padding:56px 48px;position:relative;overflow:hidden}
+.privacy:after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;background:radial-gradient(closest-side,rgba(103,232,249,.22),transparent)}
+.privacy h2{color:#fff}.privacy .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:30px;position:relative}
+.privacy .p{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px}
+.privacy .p b{display:block;color:#fff;font-family:var(--display);font-size:18px;margin-bottom:6px}.privacy .p span{font-size:15px;color:#c9c6ea}
+.privacy a{color:var(--cyan)}
+@media(max-width:900px){.privacy{padding:40px 24px}.privacy .grid4{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.privacy .grid4{grid-template-columns:1fr}}
+/* form */
+.start{display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:start}
+.start .side p{color:var(--sub);font-size:18px}.start .side img{width:190px;margin-top:10px}
+@media(max-width:900px){.start{grid-template-columns:1fr}.start .side img{display:none}}
+.card{background:#fff;border-radius:24px;box-shadow:var(--shadow2);padding:30px;border:1px solid var(--line)}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 0 18px}
+.choice label{border:2px solid var(--line);border-radius:16px;padding:14px 16px;cursor:pointer;background:#fff;font-weight:700;transition:border-color .14s,background .14s}
+.choice label span{display:block;font-weight:500;color:var(--sub);font-size:14.5px;margin-top:4px}
+.choice input{accent-color:var(--indigo);margin-right:8px}
+.choice label:has(input:checked){border-color:var(--indigo);background:var(--lav1)}
+@media(max-width:560px){.choice{grid-template-columns:1fr}}
+.field{font-weight:600;font-size:15px;color:var(--ink2)}
+input[type=text]{font:inherit;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;width:100%;margin-top:6px;background:#fcfcff}
+input[type=text]:focus{outline:3px solid rgba(99,102,241,.25);border-color:var(--indigo5)}
+.agree{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--ink2);margin:16px 0 4px}.agree input{margin-top:5px;accent-color:var(--indigo);width:17px;height:17px}
+.sub{color:var(--sub);font-size:15px}.err{color:#c0322b;font-weight:600}
+.secret{font:700 20px ui-monospace,Menlo,Consolas,monospace;background:var(--amber1);border:1.5px dashed #e3c46a;padding:12px 14px;border-radius:12px;word-break:break-all;margin:6px 0 16px;letter-spacing:.02em}
+ol{padding-left:22px}ol li{margin:8px 0}.hidden{display:none!important}
+.soon{display:inline-block;font-size:12.5px;font-weight:700;background:var(--lav1);color:var(--indigo);padding:3px 8px;border-radius:999px;margin-left:6px;vertical-align:1px}
+/* faq */
+.faq{max-width:780px;margin:0 auto}
+details{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 22px;margin:10px 0;box-shadow:0 1px 2px rgba(37,32,68,.04)}
+summary{cursor:pointer;font:700 18px/1.3 var(--display);list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary:after{content:"+";color:var(--indigo);font-size:24px;line-height:.9}details[open] summary:after{content:"–"}
+summary::-webkit-details-marker{display:none}details p{margin:10px 0 0;color:var(--ink2)}
+footer{padding:40px 0 56px;color:var(--sub);font-size:14px;text-align:center}
+footer .brand{justify-content:center;margin-bottom:10px;font-size:18px}footer .brand img{width:30px;height:30px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+</style><style>@font-face{font-family:Figtree;font-style:normal;font-display:swap;font-weight:300 900;src:url(https://sanjitkmisra.github.io/tinkerbuddy/assets/figtree.woff2) format('woff2')}@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-display:swap;font-weight:200 800;src:url(https://sanjitkmisra.github.io/tinkerbuddy/assets/bricolage.woff2) format('woff2')}</style></head><body>
+<nav><div class="wrap">
+  <a class="brand" href="#top"><img src="assets/mark.svg" alt="" onerror="this.remove()">TinkerBuddy</a>
+  <div class="links"><a href="#how">How it works</a><a href="#who">Families &amp; classes</a><a href="#privacy">Privacy</a><a href="#start" class="btn btn-primary">Start free</a></div>
+</div></nav>
 
-<section class="card" id="form">
-  <h2>Start free</h2>
-  <div class="choice">
-    <label><input type="radio" name="kind" value="family" checked>For my family<br><span class="sub">Up to a few kids at home. Daily AI limit $1 for the family.</span></label>
-    <label><input type="radio" name="kind" value="class">For my class<br><span class="sub">Students join with a class code. No student accounts.</span></label>
+<header class="hero" id="top"><div class="wrap">
+  <div>
+    <span class="eyebrow">AI design coach for Tinkercad · ages 8–14</span>
+    <h1>The design coach that <em>never does it for them.</em></h1>
+    <p class="lead">TinkerBuddy sits inside Tinkercad. It helps your child plan their build, rings the exact button to press, notices when each step is done and explains why. They do every click themselves.</p>
+    <div class="cta"><a class="btn btn-primary" href="#start">Start free</a><a class="btn btn-ghost" href="#how">See how it works</a></div>
+    <div class="trust"><span>No student accounts</span><span>No ads</span><span>Never stores what kids type or say</span></div>
   </div>
-  <p><label for="name" class="sub">Name shown on your dashboard (optional)</label><br><input id="name" type="text" maxlength="80" placeholder="e.g. The Lee family, or Ms Rivera · Period 3"></p>
-  <p class="sub"><label><input id="agree" type="checkbox"> I'm the parent/guardian or teacher, and I've read the <a href="privacy" id="privacyLink">privacy policy</a>.</label></p>
-  <button id="go">Create my free dashboard</button>
-  <p id="msg" class="sub"></p>
-</section>
+  <div class="shot">
+    <div class="frame"><div class="bar"><i></i><i></i><i></i></div><img src="assets/points.jpg" alt="TinkerBuddy ringing the Align button in Tinkercad, with a speech bubble saying Click the Align button to show the alignment dots" onerror="this.remove()"></div>
+    <div class="chip part">Part 2 of 4 · Wings</div>
+    <div class="chip ok"><b>✓</b>Step checked</div>
+    <img class="mascot" src="assets/mascot-happy.svg" alt="" onerror="this.remove()">
+  </div>
+</div></header>
 
-<section class="card hidden" id="done">
-  <h2>You're set up</h2>
-  <p><b id="whoCode">Family code</b> — your child types this in TinkerBuddy → Settings:</p><div class="secret" id="join"></div>
-  <p><b>Your private dashboard code</b> — for you only. Save it now; we can't show it again:</p><div class="secret" id="access"></div>
-  <button id="copy" type="button">Copy both</button>
-  <ol>
-    <li>Install TinkerBuddy in Chrome or Edge, open a Tinkercad design and click the TinkerBuddy button.</li>
-    <li>In TinkerBuddy's Settings, type the <span id="whoCode2">family</span> code (and initials if you like), then Join.</li>
-    <li>Open your <a id="dashLink" href="dashboard">dashboard</a> and enter your private code.</li>
-  </ol>
-</section>
-<footer>No accounts, ads or tracking. Not affiliated with Autodesk. Tinkercad is a trademark of Autodesk, Inc. · <a href="privacy" id="privacyLink2">Privacy</a></footer>
-</main>
+<section id="how"><div class="wrap">
+  <div class="center"><span class="eyebrow">How it works</span><h2>Their idea. Their clicks. A coach at their side.</h2><p>Kids learn CAD by building things they care about. TinkerBuddy turns “I want a rocket” into a plan, then coaches one small step at a time.</p></div>
+  <div class="steps">
+    <div class="step"><div class="pic"><img src="assets/plans.jpg" alt="A project plan card: Part 1 of 4" onerror="this.remove()"></div><div class="txt"><div class="n">1 · Plan</div><h3>Plans the project with them</h3><p>Breaks their idea into 3–6 parts, like “body”, “fins”, “window”, and shows “Part 2 of 5” as they go.</p></div></div>
+    <div class="step"><div class="pic" style="--pos:50% 0%"><img src="assets/points.jpg" alt="The Align button ringed in amber" onerror="this.remove()"></div><div class="txt"><div class="n">2 · Point</div><h3>Rings the exact button</h3><p>An amber ring shows which Tinkercad button to press next, and a short line says why it helps their build.</p></div></div>
+    <div class="step"><div class="pic"><img src="assets/checks.jpg" alt="A green tick when the step is done" onerror="this.remove()"></div><div class="txt"><div class="n">3 · Check</div><h3>Notices when it’s done</h3><p>A green tick when the step worked, the next step straight away, and kind help when something goes wrong.</p></div></div>
+  </div>
+  <div class="never"><img src="assets/mascot-explain.svg" alt="" onerror="this.remove()"><p><b>It can’t take over.</b><br>TinkerBuddy can’t click, drag or change their design. If they ask it to build it for them, it says it’s their creation and offers the first small step.</p></div>
+</div></section>
+
+<section id="who" style="padding-top:20px"><div class="wrap">
+  <div class="center"><span class="eyebrow">For families and classes</span><h2>See their progress, not their private words.</h2><p>Give your child or class a short code. You get a private dashboard of learning moments. Never what they type or say.</p></div>
+  <div class="two">
+    <div class="aud"><h3>For families</h3><ul><li>Free, with a daily AI limit you control</li><li>Skills they’ve practised and parts they’ve finished</li><li>Pause AI answers, switch voice or pictures off</li><li>Works in Chrome and Microsoft Edge on a laptop or desktop</li></ul><div class="dash"><img src="assets/welcome.jpg" alt="TinkerBuddy welcoming a learner back to their project, with the next part to build" style="object-position:30% 60%" onerror="this.parentNode.remove()"></div></div>
+    <div class="aud teach"><h3>For teachers</h3><ul><li>Students join with a class code. No accounts, no emails</li><li>Who’s stuck, hints per step, skills across the class</li><li>Class-wide AI limits, pause, voice and picture switches</li></ul><div class="dash"><img src="assets/dashboard.jpg" alt="Teacher dashboard with minutes, steps checked and a skills grid" onerror="this.parentNode.remove()"></div></div>
+  </div>
+</div></section>
+
+<section id="privacy" style="padding-top:20px"><div class="wrap"><div class="privacy">
+  <span class="eyebrow" style="background:rgba(255,255,255,.1);color:#cfcaff">Privacy first</span>
+  <h2>Built for kids, so we keep almost nothing.</h2>
+  <div class="grid4">
+    <div class="p"><b>No accounts</b><span>No names, emails or passwords from children. A code links them to you.</span></div>
+    <div class="p"><b>Nothing kept</b><span>Questions, answers and pictures of the design are never stored.</span></div>
+    <div class="p"><b>No ads or selling</b><span>No tracking across websites. No AI training on children’s data.</span></div>
+    <div class="p"><b>Deleted on time</b><span>Learning moments are deleted after 90 days. Leave or remove at any time.</span></div>
+  </div>
+  <p style="margin:26px 0 0;position:relative">Read the full <a href="privacy" id="privacyLink">privacy policy</a>. Schools: we sign student data privacy agreements on request.</p>
+</div></div></section>
+
+<section id="start"><div class="wrap start">
+  <div class="side"><span class="eyebrow">Start free</span><h2>Set up in a minute.</h2><p>Pick family or class. You’ll get a code for your child or students, and a private code for your dashboard. No account, no email.</p><img src="assets/mascot-explain.svg" alt="" onerror="this.remove()"></div>
+  <div>
+    <div class="card" id="form">
+      <div class="choice">
+        <label><input type="radio" name="kind" value="family" checked>For my family<span>A few kids at home. Daily AI limit $1 for the family.</span></label>
+        <label><input type="radio" name="kind" value="class">For my class<span>Students join with a class code. No student accounts.</span></label>
+      </div>
+      <label class="field" for="name">Name shown on your dashboard (optional)</label>
+      <input id="name" type="text" maxlength="80" placeholder="e.g. The Lee family, or Ms Rivera · Period 3">
+      <label class="agree"><input id="agree" type="checkbox"><span>I’m the parent/guardian or teacher, and I’ve read the <a href="privacy" id="privacyLink3">privacy policy</a>.</span></label>
+      <button class="btn btn-primary" id="go" style="margin-top:12px">Create my free dashboard</button>
+      <p id="msg" class="sub"></p>
+    </div>
+    <div class="card hidden" id="done">
+      <h3 style="font-size:26px">You’re set up 🎉</h3>
+      <p><b id="whoCode">Family code</b> — your child types this in TinkerBuddy → Settings:</p><div class="secret" id="join"></div>
+      <p><b>Your private dashboard code</b> — for you only. Save it now; we can’t show it again:</p><div class="secret" id="access"></div>
+      <button class="btn btn-ghost" id="copy" type="button">Copy both</button>
+      <ol>
+        <li>Install TinkerBuddy in Chrome or Edge<span class="soon">store listing coming soon</span>, open a Tinkercad design and click the TinkerBuddy button.</li>
+        <li>In TinkerBuddy’s Settings, type the <span id="whoCode2">family</span> code (and initials if you like), then Join.</li>
+        <li>Open your <a id="dashLink" href="dashboard">dashboard</a> and enter your private code.</li>
+      </ol>
+    </div>
+  </div>
+</div></section>
+
+<section style="padding-top:10px"><div class="wrap">
+  <div class="center" style="margin-bottom:24px"><h2>Questions</h2></div>
+  <div class="faq">
+    <details><summary>Does it do the design for my child?</summary><p>No. It can’t click, drag or change anything in Tinkercad. It plans with them, points at the right button and checks the step. They do the work and keep the credit.</p></details>
+    <details><summary>What does it cost?</summary><p>Free to start for families and classes, with a daily AI limit so costs stay predictable. We’ll tell you well before any paid plans start, and nothing changes without your say.</p></details>
+    <details><summary>What do I need?</summary><p>A free Tinkercad account and Chrome or Microsoft Edge on a laptop or desktop. Tablets and phones aren’t supported.</p></details>
+    <details><summary>Which AI does it use, and is my child’s data used to train it?</summary><p>Answers come from Anthropic’s Claude, through our own server. Anthropic doesn’t use this data to train its models, and we don’t store the questions, answers or pictures. TinkerBuddy tells children it’s an AI program, not a person.</p></details>
+    <details><summary>Can my school use it?</summary><p>Yes. Create a class, give students the class code and set the switches you want (AI limits, voice, pictures). We’ll sign your district’s student data privacy agreement on request: write to us at the address in the <a href="privacy" id="privacyLink4">privacy policy</a>.</p></details>
+    <details><summary>Is this made by Tinkercad or Autodesk?</summary><p>No. TinkerBuddy is an independent product that works alongside Tinkercad. Tinkercad is a trademark of Autodesk, Inc.</p></details>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="brand"><img src="assets/mark.svg" alt="" onerror="this.remove()">TinkerBuddy</div>
+  No accounts, ads or tracking. Not affiliated with or endorsed by Autodesk. Tinkercad is a trademark of Autodesk, Inc. · <a href="privacy" id="privacyLink2">Privacy</a>
+</div></footer>
 <script>window.TB_API="https://hvquudvrqqdyccgldrqd.supabase.co/functions/v1/tinkerbuddy";window.TB_SITE="https://sanjitkmisra.github.io/tinkerbuddy";</script>
 <script>
 (function(){
 var api = window.TB_API || location.pathname.replace(/\/(signup|start)\/?$/, '');
 var site = window.TB_SITE || api;
 var $ = function(id){ return document.getElementById(id); };
-$('privacyLink').href = site + '/privacy'; $('privacyLink2').href = site + '/privacy'; $('dashLink').href = site + '/dashboard';
+['privacyLink','privacyLink2','privacyLink3','privacyLink4'].forEach(function(id){ $(id).href = site + '/privacy'; });
+$('dashLink').href = site + '/dashboard';
 $('go').onclick = function(){
   var kind = document.querySelector('input[name=kind]:checked').value;
   if (!$('agree').checked) { $('msg').textContent = 'Please tick the box first.'; $('msg').className = 'err'; return; }
@@ -73,6 +218,7 @@ $('go').onclick = function(){
       var fam = j.kind === 'family'; $('whoCode').textContent = fam ? 'Family code' : 'Class code'; $('whoCode2').textContent = fam ? 'family' : 'class';
       try { localStorage.setItem('tbAccess', j.accessCode); } catch (e) {}
       $('form').classList.add('hidden'); $('done').classList.remove('hidden');
+      $('done').scrollIntoView({behavior:'smooth', block:'center'});
     }).catch(function(){ $('go').disabled = false; $('msg').className = 'err'; $('msg').textContent = 'Couldn’t reach TinkerBuddy. Try again.'; });
 };
 $('copy').onclick = function(){ navigator.clipboard.writeText('TinkerBuddy ' + $('whoCode').textContent + ': ' + $('join').textContent + '\nPrivate dashboard code: ' + $('access').textContent).then(function(){ $('copy').textContent = 'Copied'; }); };

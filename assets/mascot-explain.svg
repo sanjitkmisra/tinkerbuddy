@@ -1,0 +1,433 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="tbm-root tbm-state-explaining tbm-reduced" style="--tbm-lean:0.00deg" width="240" height="271.2" viewBox="0 -10 200 226" role="img" aria-labelledby="tbm_R_0_-shell-title" data-state="explaining"><style>/*
+ * TinkerBuddy mascot styles. Everything is scoped under .tbm-root so this sheet can be injected
+ * into a shadow root or a normal page. Only transform/opacity are animated.
+ *
+ * Layering (outer → inner):
+ *   .tbm-pose   per-state pose, CSS transition (interruptible)
+ *   .tbm-once   entry gestures (Web Animations, one-shot)
+ *   .tbm-float  hover loop (Web Animations, speed changes without restarting)
+ */
+
+.tbm-root {
+  --tbm-eye: #67e8f9;
+  --tbm-eye-hi: #f0feff;
+  --tbm-eye-lo: #22c3e6;
+  --tbm-bulb: #67e8f9;
+  --tbm-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --tbm-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --tbm-lean: 0deg;
+  display: inline-block;
+  overflow: visible;
+  vertical-align: middle;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tbm-root * {
+  transform-box: view-box;
+}
+
+/* ---------- transform origins (view-box user units) ---------- */
+.tbm-root .tbm-pose {
+  transform-origin: 100px 160px;
+  transition: transform 560ms var(--tbm-spring);
+}
+.tbm-root .tbm-once,
+.tbm-root .tbm-float {
+  transform-origin: 100px 182px;
+}
+.tbm-root .tbm-shadow-wrap,
+.tbm-root .tbm-shadow {
+  transform-origin: 100px 206px;
+}
+.tbm-root .tbm-shadow-wrap {
+  transition: transform 560ms var(--tbm-ease), opacity 400ms ease;
+}
+.tbm-root .tbm-head-pose {
+  transform-origin: 100px 124px;
+  transition: transform 560ms var(--tbm-spring);
+}
+.tbm-root .tbm-turn {
+  transition: transform 380ms var(--tbm-ease);
+}
+.tbm-root .tbm-arm-pose {
+  transition: transform 600ms var(--tbm-spring);
+}
+.tbm-root .tbm-hand {
+  transition: transform 460ms var(--tbm-spring);
+}
+.tbm-root .tbm-finger {
+  opacity: 0;
+  transform: scaleX(0.3);
+  transform-origin: 5px 0;
+  transition: opacity 200ms ease, transform 360ms var(--tbm-spring);
+}
+.tbm-root .tbm-bulb {
+  transition: transform 460ms var(--tbm-spring);
+}
+.tbm-root .tbm-bulb-fill {
+  fill: var(--tbm-bulb);
+}
+.tbm-root .tbm-bulb-glow {
+  transition: opacity 400ms ease, transform 460ms var(--tbm-spring);
+}
+.tbm-root .tbm-screen-tint {
+  fill: #17132f;
+  opacity: 0;
+  transition: opacity 400ms ease, fill 400ms ease;
+}
+.tbm-root .tbm-blush {
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.tbm-root .tbm-eye-glow {
+  transition: opacity 300ms ease;
+}
+.tbm-root .tbm-ear-light {
+  transition: opacity 300ms ease;
+  opacity: 0.85;
+}
+.tbm-root .tbm-speech {
+  transition: transform 120ms ease-out;
+}
+
+/* ---------- state-only effects: fade in/out, hidden when inactive ---------- */
+.tbm-root .tbm-fx {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 260ms ease, visibility 0s linear 260ms;
+}
+.tbm-root.tbm-state-listening .tbm-rings,
+.tbm-root.tbm-state-thinking .tbm-orbit,
+.tbm-root.tbm-state-clarifying .tbm-question,
+.tbm-root.tbm-state-celebrating .tbm-sparkles,
+.tbm-root.tbm-state-sleeping .tbm-zzz,
+.tbm-root.tbm-state-waiting .tbm-dots {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 260ms ease, visibility 0s;
+}
+
+/* rings */
+.tbm-root .tbm-ring {
+  fill: none;
+  stroke: #67e8f9;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  transform-origin: 0 0;
+}
+/* waiting pill */
+.tbm-root .tbm-dots-pill {
+  fill: #ede9fe;
+  stroke: #a5abfb;
+  stroke-width: 1.2;
+}
+.tbm-root .tbm-dot {
+  fill: #5048e5;
+}
+.tbm-root .tbm-z {
+  fill: none;
+  stroke: #8b84ec;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform-origin: 0 0;
+}
+.tbm-root .tbm-twinkle {
+  transform-origin: 0 0;
+}
+
+/* ================================================================ */
+/* States                                                            */
+/* ================================================================ */
+
+/* blinking + expression pop (all states with open eyes) */
+.tbm-root .tbm-blink { animation: tbm-blink 5.2s ease-in-out infinite; transform-origin: 0 0; }
+.tbm-root .tbm-pop { animation: tbm-pop 220ms var(--tbm-ease) 1; transform-origin: 0 0; }
+
+/* Arm rest pose (0deg = arm pointing right) */
+.tbm-root .tbm-arm-l .tbm-arm-pose { transform: rotate(106deg); }
+.tbm-root .tbm-arm-r .tbm-arm-pose { transform: rotate(74deg); }
+
+/* Digital brows: hidden unless a state needs them */
+.tbm-root .tbm-brow {
+  opacity: 0;
+  transform-origin: 0 0;
+  transition: opacity 220ms ease, transform 420ms var(--tbm-spring);
+}
+.tbm-root.tbm-state-listening .tbm-brow { opacity: 1; transform: translateY(-3.5px); }
+.tbm-root.tbm-state-thinking .tbm-brow-l { opacity: 1; transform: translateY(5px) rotate(9deg); }
+.tbm-root.tbm-state-thinking .tbm-brow-r { opacity: 1; transform: translateY(-5px) rotate(-8deg); }
+.tbm-root.tbm-state-explaining .tbm-brow-l { opacity: 1; transform: translateY(-4px) rotate(7deg); }
+.tbm-root.tbm-state-explaining .tbm-brow-r { opacity: 1; transform: translateY(-4px) rotate(-7deg); }
+.tbm-root.tbm-state-clarifying .tbm-brow-l { opacity: 1; transform: translateY(-6px) rotate(-10deg); }
+.tbm-root.tbm-state-clarifying .tbm-brow-r { opacity: 1; transform: translateY(6px) rotate(-12deg); }
+
+/* idle ------------------------------------------------------------ */
+.tbm-root.tbm-state-idle .tbm-arm-loop { animation: tbm-sway 3.6s ease-in-out infinite; }
+.tbm-root.tbm-state-idle .tbm-arm-r .tbm-arm-loop { animation-delay: -1.8s; }
+.tbm-root.tbm-state-idle .tbm-bulb-glow { animation: tbm-glow 4s ease-in-out infinite; }
+
+/* listening ------------------------------------------------------- */
+.tbm-root.tbm-state-listening .tbm-pose { transform: translateY(2px) scale(1.035); }
+.tbm-root.tbm-state-listening .tbm-head-pose { transform: translateY(3px) rotate(-1.5deg); }
+.tbm-root.tbm-state-listening .tbm-arm-l .tbm-arm-pose { transform: rotate(128deg); }
+.tbm-root.tbm-state-listening .tbm-arm-r .tbm-arm-pose { transform: rotate(52deg); }
+.tbm-root.tbm-state-listening .tbm-ring-1 { animation: tbm-ring 2s ease-out infinite; }
+.tbm-root.tbm-state-listening .tbm-ring-2 { animation: tbm-ring 2s ease-out -1s infinite; }
+.tbm-root.tbm-state-listening .tbm-ear-light { opacity: 1; animation: tbm-ear 2s ease-in-out infinite; }
+.tbm-root.tbm-state-listening .tbm-bulb-glow { transform: scale(1.15); }
+
+/* thinking -------------------------------------------------------- */
+.tbm-root.tbm-state-thinking { --tbm-bulb: #a5b4fc; }
+.tbm-root.tbm-state-thinking .tbm-pose { transform: rotate(1.5deg); }
+.tbm-root.tbm-state-thinking .tbm-head-pose { transform: rotate(5deg); }
+.tbm-root.tbm-state-thinking .tbm-arm-l .tbm-arm-pose { transform: rotate(-62deg); }
+.tbm-root.tbm-state-thinking .tbm-arm-r .tbm-arm-pose { transform: rotate(78deg); }
+.tbm-root.tbm-state-thinking .tbm-bulb { animation: tbm-pulse 2s ease-in-out infinite; }
+.tbm-root.tbm-state-thinking .tbm-bulb-glow { animation: tbm-glow 2s ease-in-out infinite; }
+.tbm-root.tbm-state-thinking .tbm-orbit-x { animation: tbm-orbit-x 2.6s ease-in-out infinite alternate; }
+.tbm-root.tbm-state-thinking .tbm-orbit-y { animation: tbm-orbit-y 2.6s ease-in-out -1.3s infinite alternate; }
+
+/* explaining ------------------------------------------------------ */
+.tbm-root.tbm-state-explaining { --tbm-bulb: #c4b5fd; }
+.tbm-root.tbm-state-explaining .tbm-head-pose { transform: rotate(-2.5deg); }
+.tbm-root.tbm-state-explaining .tbm-arm-l .tbm-arm-pose { transform: rotate(116deg); }
+.tbm-root.tbm-state-explaining .tbm-arm-r .tbm-arm-pose { transform: rotate(-22deg); }
+.tbm-root.tbm-state-explaining .tbm-arm-r .tbm-arm-loop { animation: tbm-gesture 2.8s ease-in-out infinite; }
+.tbm-root.tbm-state-explaining .tbm-bulb-glow { animation: tbm-glow 2.8s ease-in-out infinite; }
+.tbm-root.tbm-talking .tbm-speech-anim { animation: tbm-talk 2.4s linear infinite; transform-origin: 0 0; }
+
+/* pointing -------------------------------------------------------- */
+.tbm-root.tbm-state-pointing .tbm-pose { transform: rotate(var(--tbm-lean)); }
+.tbm-root.tbm-state-pointing .tbm-head-pose { transform: rotate(calc(var(--tbm-lean) * 0.8)); }
+.tbm-root.tbm-state-pointing .tbm-arm-l .tbm-arm-pose { transform: rotate(104deg); }
+.tbm-root.tbm-state-pointing .tbm-arm-r .tbm-arm-pose { transform: rotate(76deg); }
+.tbm-root.tbm-state-pointing .tbm-arm-active .tbm-hand { transform: translateX(10px); }
+.tbm-root.tbm-state-pointing .tbm-arm-active .tbm-finger { opacity: 1; transform: scaleX(1); }
+.tbm-root.tbm-state-pointing .tbm-arm-active .tbm-arm-loop { animation: tbm-jab 2.4s ease-in-out infinite; }
+
+/* waiting --------------------------------------------------------- */
+.tbm-root.tbm-state-waiting .tbm-pose { transform: translateY(2px); }
+.tbm-root.tbm-state-waiting .tbm-head-pose { transform: rotate(2deg); }
+.tbm-root.tbm-state-waiting .tbm-arm-l .tbm-arm-pose { transform: rotate(100deg); }
+.tbm-root.tbm-state-waiting .tbm-arm-r .tbm-arm-pose { transform: rotate(80deg); }
+.tbm-root.tbm-state-waiting .tbm-bulb-glow { animation: tbm-glow 4.8s ease-in-out infinite; }
+.tbm-root.tbm-state-waiting .tbm-dot-1 { animation: tbm-dot 2.4s ease-in-out infinite; }
+.tbm-root.tbm-state-waiting .tbm-dot-2 { animation: tbm-dot 2.4s ease-in-out 0.3s infinite; }
+.tbm-root.tbm-state-waiting .tbm-dot-3 { animation: tbm-dot 2.4s ease-in-out 0.6s infinite; }
+.tbm-root.tbm-state-waiting .tbm-blink { animation-duration: 6.4s; }
+
+/* celebrating ----------------------------------------------------- */
+.tbm-root.tbm-state-celebrating { --tbm-bulb: #6ee7b7; }
+.tbm-root.tbm-state-celebrating .tbm-pose { transform: translateY(-3px); }
+.tbm-root.tbm-state-celebrating .tbm-head-pose { transform: rotate(-3deg); }
+.tbm-root.tbm-state-celebrating .tbm-arm-l .tbm-arm-pose { transform: rotate(222deg); }
+.tbm-root.tbm-state-celebrating .tbm-arm-r .tbm-arm-pose { transform: rotate(-42deg); }
+.tbm-root.tbm-state-celebrating .tbm-arm-l .tbm-arm-loop { animation: tbm-wave-l 2.4s ease-in-out infinite; }
+.tbm-root.tbm-state-celebrating .tbm-arm-r .tbm-arm-loop { animation: tbm-wave-r 2.4s ease-in-out infinite; }
+.tbm-root.tbm-state-celebrating .tbm-blush { opacity: 1; }
+.tbm-root.tbm-state-celebrating .tbm-bulb-glow { transform: scale(1.25); }
+.tbm-root.tbm-state-celebrating .tbm-tw-1 { animation: tbm-twinkle 2.4s ease-in-out infinite; }
+.tbm-root.tbm-state-celebrating .tbm-tw-2 { animation: tbm-twinkle 2.4s ease-in-out -0.6s infinite; }
+.tbm-root.tbm-state-celebrating .tbm-tw-3 { animation: tbm-twinkle 2.4s ease-in-out -1.2s infinite; }
+.tbm-root.tbm-state-celebrating .tbm-tw-4 { animation: tbm-twinkle 2.4s ease-in-out -1.8s infinite; }
+
+/* clarifying ------------------------------------------------------ */
+.tbm-root.tbm-state-clarifying .tbm-pose { transform: rotate(-2deg); }
+.tbm-root.tbm-state-clarifying .tbm-head-pose { transform: rotate(-11deg); }
+.tbm-root.tbm-state-clarifying .tbm-arm-l .tbm-arm-pose { transform: rotate(196deg); }
+.tbm-root.tbm-state-clarifying .tbm-arm-r .tbm-arm-pose { transform: rotate(-16deg); }
+.tbm-root.tbm-state-clarifying .tbm-bulb { transform: scale(1.75); }
+.tbm-root.tbm-state-clarifying .tbm-bulb-glow { transform: scale(1.5); animation: tbm-glow 3s ease-in-out infinite; }
+
+/* sleeping -------------------------------------------------------- */
+.tbm-root.tbm-state-sleeping { --tbm-bulb: #8f89c9; --tbm-eye: #5fc6dc; --tbm-eye-hi: #a5e9f4; --tbm-eye-lo: #3a9fbb; }
+.tbm-root.tbm-state-sleeping .tbm-pose { transform: translateY(9px) scale(0.95); }
+.tbm-root.tbm-state-sleeping .tbm-head-pose { transform: translateY(5px) rotate(-6deg); }
+.tbm-root.tbm-state-sleeping .tbm-shadow-wrap { transform: scale(1.06); }
+.tbm-root.tbm-state-sleeping .tbm-arm-l .tbm-arm-pose { transform: rotate(96deg); }
+.tbm-root.tbm-state-sleeping .tbm-arm-r .tbm-arm-pose { transform: rotate(84deg); }
+.tbm-root.tbm-state-sleeping .tbm-bulb-glow { opacity: 0.25; }
+.tbm-root.tbm-state-sleeping .tbm-eye-glow { opacity: 0.35; }
+.tbm-root.tbm-state-sleeping .tbm-ear-light { opacity: 0.3; }
+.tbm-root.tbm-state-sleeping .tbm-screen-tint { opacity: 0.3; }
+.tbm-root.tbm-state-sleeping .tbm-z-1 { animation: tbm-drift 4.8s ease-out infinite; }
+.tbm-root.tbm-state-sleeping .tbm-z-2 { animation: tbm-drift 4.8s ease-out -2.4s infinite; }
+.tbm-root.tbm-state-sleeping .tbm-sleep-mouth { animation: tbm-breathe 5.2s ease-in-out infinite; transform-origin: 0 0; }
+
+/* error ----------------------------------------------------------- */
+.tbm-root.tbm-state-error { --tbm-bulb: #fbbf24; --tbm-eye: #fcd34d; --tbm-eye-hi: #fffbeb; --tbm-eye-lo: #f59e0b; }
+.tbm-root.tbm-state-error .tbm-head-pose { transform: translateY(1px) rotate(-3deg); }
+.tbm-root.tbm-state-error .tbm-arm-l .tbm-arm-pose { transform: rotate(138deg); }
+.tbm-root.tbm-state-error .tbm-arm-r .tbm-arm-pose { transform: rotate(-78deg); }
+.tbm-root.tbm-state-error .tbm-screen-tint { fill: #b45309; opacity: 0.12; }
+.tbm-root.tbm-state-error .tbm-bulb-glow { animation: tbm-glow 2.4s ease-in-out infinite; }
+
+
+/* ================================================================ */
+/* Keyframes                                                         */
+/* ================================================================ */
+@keyframes tbm-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  94.5% { transform: scaleY(0.08); }
+}
+@keyframes tbm-pop {
+  from { transform: scale(1.12, 0.25); opacity: 0.4; }
+  to { transform: scale(1, 1); opacity: 1; }
+}
+@keyframes tbm-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-4deg); }
+}
+@keyframes tbm-glow {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
+}
+@keyframes tbm-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+}
+@keyframes tbm-ring {
+  0% { transform: scale(0.7); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+@keyframes tbm-ear {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+@keyframes tbm-orbit-x {
+  from { transform: translateX(-14px); }
+  to { transform: translateX(14px); }
+}
+@keyframes tbm-orbit-y {
+  from { transform: translateY(-5px); }
+  to { transform: translateY(5px); }
+}
+@keyframes tbm-gesture {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-16deg); }
+  55% { transform: rotate(-4deg); }
+  75% { transform: rotate(-12deg); }
+}
+@keyframes tbm-talk {
+  0% { transform: scale(1, 0.62); }
+  8% { transform: scale(0.96, 1.08); }
+  16% { transform: scale(1.02, 0.5); }
+  24% { transform: scale(0.98, 0.95); }
+  33% { transform: scale(1, 0.7); }
+  41% { transform: scale(0.95, 1.14); }
+  49% { transform: scale(1.03, 0.56); }
+  57% { transform: scale(0.98, 1); }
+  65% { transform: scale(1, 0.66); }
+  73% { transform: scale(0.96, 1.1); }
+  81% { transform: scale(1.02, 0.5); }
+  90% { transform: scale(0.98, 0.9); }
+  100% { transform: scale(1, 0.62); }
+}
+@keyframes tbm-jab {
+  0%, 60%, 100% { transform: translateX(0px); }
+  70% { transform: translateX(-2px); }
+  80% { transform: translateX(3px); }
+}
+@keyframes tbm-dot {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0px); }
+  20% { opacity: 1; transform: translateY(-1.5px); }
+}
+@keyframes tbm-wave-l {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(14deg); }
+  50% { transform: rotate(-4deg); }
+  75% { transform: rotate(10deg); }
+}
+@keyframes tbm-wave-r {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-14deg); }
+  50% { transform: rotate(4deg); }
+  75% { transform: rotate(-10deg); }
+}
+@keyframes tbm-twinkle {
+  0% { transform: scale(0.2) rotate(0deg); opacity: 0; }
+  22% { transform: scale(1.05) rotate(20deg); opacity: 1; }
+  50% { transform: scale(0.85) rotate(35deg); opacity: 0.9; }
+  75%, 100% { transform: scale(0.2) rotate(45deg); opacity: 0; }
+}
+@keyframes tbm-drift {
+  0% { transform: translate(0px, 6px) scale(0.6); opacity: 0; }
+  25% { opacity: 1; }
+  100% { transform: translate(7px, -12px) scale(1.1); opacity: 0; }
+}
+@keyframes tbm-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+}
+
+/* ================================================================ */
+/* Reduced motion: poses + instant expression changes + subtle blink */
+/* ================================================================ */
+.tbm-root.tbm-reduced .tbm-arm-loop,
+.tbm-root.tbm-reduced .tbm-bulb,
+.tbm-root.tbm-reduced .tbm-bulb-glow,
+.tbm-root.tbm-reduced .tbm-ring,
+.tbm-root.tbm-reduced .tbm-orbit-x,
+.tbm-root.tbm-reduced .tbm-orbit-y,
+.tbm-root.tbm-reduced .tbm-ear-light,
+.tbm-root.tbm-reduced .tbm-speech-anim,
+.tbm-root.tbm-reduced .tbm-dot,
+.tbm-root.tbm-reduced .tbm-twinkle,
+.tbm-root.tbm-reduced .tbm-z,
+.tbm-root.tbm-reduced .tbm-sleep-mouth,
+.tbm-root.tbm-reduced .tbm-pop {
+  animation: none !important;
+}
+.tbm-root.tbm-reduced .tbm-pose,
+.tbm-root.tbm-reduced .tbm-head-pose,
+.tbm-root.tbm-reduced .tbm-arm-pose,
+.tbm-root.tbm-reduced .tbm-hand,
+.tbm-root.tbm-reduced .tbm-turn,
+.tbm-root.tbm-reduced .tbm-bulb,
+.tbm-root.tbm-reduced .tbm-finger,
+.tbm-root.tbm-reduced .tbm-shadow-wrap {
+  transition-duration: 0ms;
+}
+.tbm-root.tbm-reduced .tbm-blink { animation-duration: 7s; }
+.tbm-root.tbm-reduced .tbm-orbit-x { transform: translateX(11px); }
+.tbm-root.tbm-reduced .tbm-orbit-y { transform: translateY(-3px); }
+.tbm-root.tbm-reduced .tbm-ring { opacity: 0.8; }
+.tbm-root.tbm-reduced .tbm-dot { opacity: 0.85; }
+.tbm-root.tbm-reduced .tbm-z-1 { transform: translate(0px, 2px) scale(0.85); }
+.tbm-root.tbm-reduced .tbm-z-2 { opacity: 0.7; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tbm-root .tbm-arm-loop,
+  .tbm-root .tbm-bulb,
+  .tbm-root .tbm-bulb-glow,
+  .tbm-root .tbm-ring,
+  .tbm-root .tbm-orbit-x,
+  .tbm-root .tbm-orbit-y,
+  .tbm-root .tbm-ear-light,
+  .tbm-root .tbm-speech-anim,
+  .tbm-root .tbm-dot,
+  .tbm-root .tbm-twinkle,
+  .tbm-root .tbm-z,
+  .tbm-root .tbm-sleep-mouth,
+  .tbm-root .tbm-pop {
+    animation: none !important;
+  }
+  .tbm-root .tbm-pose,
+  .tbm-root .tbm-head-pose,
+  .tbm-root .tbm-arm-pose,
+  .tbm-root .tbm-hand,
+  .tbm-root .tbm-turn,
+  .tbm-root .tbm-bulb,
+  .tbm-root .tbm-finger,
+  .tbm-root .tbm-shadow-wrap {
+    transition-duration: 0ms;
+  }
+  .tbm-root .tbm-blink { animation-duration: 7s; }
+  .tbm-root .tbm-orbit-x { transform: translateX(11px); }
+  .tbm-root .tbm-orbit-y { transform: translateY(-3px); }
+  .tbm-root .tbm-ring { opacity: 0.8; }
+  .tbm-root .tbm-dot { opacity: 0.85; }
+}
+</style><title id="tbm_R_0_-shell-title">TinkerBuddy</title><defs><radialGradient id="tbm_R_0_-shell" cx="0.34" cy="0.2" r="0.95" fx="0.3" fy="0.14"><stop offset="0" stop-color="#ffffff"></stop><stop offset="0.16" stop-color="#ebe7ff"></stop><stop offset="0.5" stop-color="#bdb6fc"></stop><stop offset="0.82" stop-color="#8580f2"></stop><stop offset="1" stop-color="#5d55da"></stop></radialGradient><radialGradient id="tbm_R_0_-body" cx="0.36" cy="0.12" r="1" fx="0.32" fy="0.06"><stop offset="0" stop-color="#f6f4ff"></stop><stop offset="0.3" stop-color="#c8c1fd"></stop><stop offset="0.7" stop-color="#8d88f3"></stop><stop offset="1" stop-color="#5048d0"></stop></radialGradient><linearGradient id="tbm_R_0_-bezel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6f68e6"></stop><stop offset="1" stop-color="#3b3399"></stop></linearGradient><linearGradient id="tbm_R_0_-screen" x1="0.2" y1="0" x2="0.5" y2="1"><stop offset="0" stop-color="#332b6b"></stop><stop offset="0.55" stop-color="#1c1740"></stop><stop offset="1" stop-color="#120e2a"></stop></linearGradient><linearGradient id="tbm_R_0_-gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.28"></stop><stop offset="1" stop-color="#ffffff" stop-opacity="0"></stop></linearGradient><linearGradient id="tbm_R_0_-eye" x1="0" y1="-12" x2="0" y2="12" gradientUnits="userSpaceOnUse"><stop offset="0" style="stop-color:var(--tbm-eye-hi)"></stop><stop offset="0.55" style="stop-color:var(--tbm-eye)"></stop><stop offset="1" style="stop-color:var(--tbm-eye-lo)"></stop></linearGradient><radialGradient id="tbm_R_0_-eyeglow"><stop offset="0" style="stop-color:var(--tbm-eye);stop-opacity:0.55"></stop><stop offset="1" style="stop-color:var(--tbm-eye);stop-opacity:0"></stop></radialGradient><radialGradient id="tbm_R_0_-bulbglow"><stop offset="0.25" style="stop-color:var(--tbm-bulb);stop-opacity:0.7"></stop><stop offset="1" style="stop-color:var(--tbm-bulb);stop-opacity:0"></stop></radialGradient><radialGradient id="tbm_R_0_-shadow"><stop offset="0" stop-color="#17132f" stop-opacity="0.34"></stop><stop offset="0.6" stop-color="#17132f" stop-opacity="0.14"></stop><stop offset="1" stop-color="#17132f" stop-opacity="0"></stop></radialGradient><radialGradient id="tbm_R_0_-hand" cx="0.5" cy="0.5" r="0.62"><stop offset="0" stop-color="#f4f2ff"></stop><stop offset="0.45" stop-color="#d3cdff"></stop><stop offset="1" stop-color="#7f79ee"></stop></radialGradient><linearGradient id="tbm_R_0_-ear" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8e88f5"></stop><stop offset="1" stop-color="#433bb0"></stop></linearGradient><radialGradient id="tbm_R_0_-hover"><stop offset="0" stop-color="#a5f3fc" stop-opacity="0.85"></stop><stop offset="1" stop-color="#67e8f9" stop-opacity="0"></stop></radialGradient></defs><g class="tbm-shadow-wrap"><g class="tbm-shadow"><ellipse cx="100" cy="206" rx="40" ry="6.5" fill="url(#tbm_R_0_-shadow)"></ellipse></g></g><g class="tbm-pose"><g class="tbm-once"><g class="tbm-float"><g class="tbm-body"><g class="tbm-hover-glow"><ellipse cx="100" cy="190" rx="22" ry="6.5" fill="url(#tbm_R_0_-hover)"></ellipse><ellipse cx="100" cy="190" rx="16" ry="3.6" fill="none" stroke="#67e8f9" stroke-width="2" opacity="0.7"></ellipse></g><path d="M 62 112 C 58 146 72 180 100 182 C 128 180 142 146 138 112 Z" fill="url(#tbm_R_0_-body)" stroke="#4038b8" stroke-opacity="0.32" stroke-width="1.4"></path><path d="M 134 128 C 136 150 126 172 108 179" fill="none" stroke="#a5f3fc" stroke-opacity="0.55" stroke-width="1.8" stroke-linecap="round"></path><path d="M 66 151 Q 100 160 134 151" fill="none" stroke="#5a52d6" stroke-opacity="0.35" stroke-width="1.6" stroke-linecap="round"></path><ellipse cx="100" cy="178.5" rx="13" ry="4" fill="#4a42c2"></ellipse><ellipse cx="100" cy="179.5" rx="8" ry="2" fill="#a5f3fc" opacity="0.9"></ellipse><g class="tbm-core" transform="translate(100 140)"><circle r="11" fill="#67e8f9" opacity="0.18"></circle><path d="M 0 -7.5 L 6.5 -3.75 L 0 0 L -6.5 -3.75 Z" fill="#ecfeff"></path><path d="M -6.5 -3.75 L 0 0 L 0 7.5 L -6.5 3.75 Z" fill="#67e8f9"></path><path d="M 6.5 -3.75 L 0 0 L 0 7.5 L 6.5 3.75 Z" fill="#22b8d6"></path></g></g><ellipse cx="100" cy="127" rx="34" ry="6" fill="#2b2380" opacity="0.2"></ellipse><g class="tbm-head-pose"><g class="tbm-head"><g class="tbm-turn" style="transform:translate(0.00px, 0.00px)"><path d="M 100 36 Q 98.5 25 104 17.5" fill="none" stroke="#5a52d6" stroke-width="3.8" stroke-linecap="round"></path><path d="M 88 37 Q 100 27 112 37 Z" fill="#7d77ec"></path><g transform="translate(105 13)"><g class="tbm-bulb-glow"><circle r="17" fill="url(#tbm_R_0_-bulbglow)"></circle></g><g class="tbm-rings tbm-fx"><path class="tbm-ring tbm-ring-1" d="M -12 -6 A 13 13 0 0 0 -12 6 M 12 -6 A 13 13 0 0 1 12 6"></path><path class="tbm-ring tbm-ring-2" d="M -18 -9 A 20 20 0 0 0 -18 9 M 18 -9 A 20 20 0 0 1 18 9"></path></g><g class="tbm-orbit tbm-fx"><g class="tbm-orbit-x"><g class="tbm-orbit-y"><circle r="2.4" fill="#a5f3fc"></circle></g></g></g><g class="tbm-bulb"><circle r="6.6" class="tbm-bulb-fill"></circle><circle cx="-2" cy="-2.2" r="2" fill="#fff" opacity="0.85"></circle><g class="tbm-question tbm-fx"><path d="M -2.3 -2.4 Q -2.3 -4.9 0.1 -4.9 Q 2.6 -4.9 2.6 -2.5 Q 2.6 -1 0.7 -0.1 Q 0 0.3 0 1.6" fill="none" stroke="#252044" stroke-width="1.7" stroke-linecap="round"></path><circle cx="0" cy="3.7" r="1" fill="#252044"></circle></g></g></g></g><path d="M 78 34 H 122 C 148 34 166 50 166 76 V 86 C 166 110 150 126 124 126 H 76 C 50 126 34 110 34 86 V 76 C 34 50 52 34 78 34 Z" fill="url(#tbm_R_0_-shell)" stroke="#4038b8" stroke-opacity="0.3" stroke-width="1.4"></path><path d="M 64 41 Q 82 36 104 37" fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="3.2" stroke-linecap="round"></path><path d="M 58 120 Q 100 132 142 120" fill="none" stroke="#67e8f9" stroke-opacity="0.28" stroke-width="2.4" stroke-linecap="round"></path><g class="tbm-turn" style="transform:translate(0.00px, 0.00px)"><g class="tbm-ear"><rect x="26" y="68" width="15" height="28" rx="7.5" fill="url(#tbm_R_0_-ear)"></rect><rect class="tbm-ear-light" x="29.5" y="74" width="4" height="16" rx="2" fill="#67e8f9"></rect></g><g class="tbm-ear"><rect x="159" y="68" width="15" height="28" rx="7.5" fill="url(#tbm_R_0_-ear)"></rect><rect class="tbm-ear-light" x="166.5" y="74" width="4" height="16" rx="2" fill="#67e8f9"></rect></g></g><g class="tbm-turn" style="transform:translate(0.00px, 0.00px)"><path d="M 79 45 H 121 C 142 45 155 58 155 76 V 88 C 155 106 142 118 122 118 H 78 C 58 118 45 106 45 88 V 76 C 45 58 58 45 79 45 Z" fill="url(#tbm_R_0_-bezel)"></path><path d="M 79 49 H 121 C 139 49 151 60 151 76 V 88 C 151 104 140 114 122 114 H 78 C 60 114 49 104 49 88 V 76 C 49 60 61 49 79 49 Z" fill="url(#tbm_R_0_-screen)"></path><path d="M 79 49 H 121 C 139 49 151 60 151 76 V 88 C 151 104 140 114 122 114 H 78 C 60 114 49 104 49 88 V 76 C 49 60 61 49 79 49 Z" class="tbm-screen-tint"></path><g class="tbm-blush"><ellipse cx="66" cy="97" rx="6.5" ry="3.6" fill="#fda4af" opacity="0.55"></ellipse><ellipse cx="134" cy="97" rx="6.5" ry="3.6" fill="#fda4af" opacity="0.55"></ellipse></g><g class="tbm-turn tbm-eyes" style="transform:translate(0.00px, 0.00px)"><circle cx="80" cy="81" r="18" fill="url(#tbm_R_0_-eyeglow)" class="tbm-eye-glow"></circle><circle cx="120" cy="81" r="18" fill="url(#tbm_R_0_-eyeglow)" class="tbm-eye-glow"></circle><g transform="translate(80 63)"><g class="tbm-brow tbm-brow-l"><rect x="-6.5" y="-1.8" width="13" height="3.6" rx="1.8" fill="url(#tbm_R_0_-eye)"></rect></g></g><g transform="translate(120 63)"><g class="tbm-brow tbm-brow-r"><rect x="-6.5" y="-1.8" width="13" height="3.6" rx="1.8" fill="url(#tbm_R_0_-eye)"></rect></g></g><g transform="translate(80 81)"><g class="tbm-pop"><g class="tbm-blink"><rect x="-8.2" y="-11.4" width="16.4" height="22.4" rx="8.2" fill="url(#tbm_R_0_-eye)"></rect><circle cx="-2.8" cy="-5.4" r="3" fill="#fff" opacity="0.95"></circle><circle cx="3.2" cy="4.4" r="1.4" fill="#fff" opacity="0.55"></circle></g></g></g><g transform="translate(120 81)"><g class="tbm-pop"><g class="tbm-blink"><rect x="-8.2" y="-11.4" width="16.4" height="22.4" rx="8.2" fill="url(#tbm_R_0_-eye)"></rect><circle cx="-2.8" cy="-5.4" r="3" fill="#fff" opacity="0.95"></circle><circle cx="3.2" cy="4.4" r="1.4" fill="#fff" opacity="0.55"></circle></g></g></g><g transform="translate(100 101)" class="tbm-mouth"><g class="tbm-pop"><g class="tbm-speech" style="transform:scaleY(0.320)"><g class="tbm-speech-anim"><rect x="-8.5" y="-4" width="17" height="8" rx="4" fill="url(#tbm_R_0_-eye)"></rect></g></g></g></g></g><path d="M 62 60 Q 80 52 100 52 Q 76 58 64 70 Z" fill="url(#tbm_R_0_-gloss)"></path></g></g></g><g class="tbm-arm tbm-arm-l" transform="translate(67 146)"><g class="tbm-arm-pose"><g class="tbm-arm-loop"><circle r="7" fill="#6a63e0"></circle><path d="M 0 0 L 21 0" stroke="#7a74ea" stroke-width="10" stroke-linecap="round"></path><path d="M 3 -2.4 L 19 -2.4" stroke="#cfcaff" stroke-opacity="0.75" stroke-width="2.2" stroke-linecap="round"></path><g transform="translate(23 0)"><g class="tbm-hand"><path d="M -12 0 L 0 0" stroke="#7a74ea" stroke-width="10" stroke-linecap="round"></path><rect x="-7.5" y="-5.8" width="4.4" height="11.6" rx="2.2" fill="#67e8f9"></rect><g class="tbm-finger"><path d="M 5 -2 L 17.5 -2" stroke="#4038b8" stroke-opacity="0.4" stroke-width="8.6" stroke-linecap="round"></path><path d="M 5 -2 L 17.5 -2" stroke="#e4e0ff" stroke-width="6.8" stroke-linecap="round"></path></g><circle r="9.8" fill="url(#tbm_R_0_-hand)" stroke="#4038b8" stroke-opacity="0.32" stroke-width="1.1"></circle><circle cx="1.5" cy="-7.6" r="3.6" fill="#e4e0ff" stroke="#4038b8" stroke-opacity="0.3" stroke-width="1"></circle></g></g></g></g></g><g class="tbm-arm tbm-arm-r" transform="translate(133 146)"><g class="tbm-arm-pose"><g class="tbm-arm-loop"><circle r="7" fill="#6a63e0"></circle><path d="M 0 0 L 21 0" stroke="#7a74ea" stroke-width="10" stroke-linecap="round"></path><path d="M 3 -2.4 L 19 -2.4" stroke="#cfcaff" stroke-opacity="0.75" stroke-width="2.2" stroke-linecap="round"></path><g transform="translate(23 0)"><g class="tbm-hand"><path d="M -12 0 L 0 0" stroke="#7a74ea" stroke-width="10" stroke-linecap="round"></path><rect x="-7.5" y="-5.8" width="4.4" height="11.6" rx="2.2" fill="#67e8f9"></rect><g class="tbm-finger"><path d="M 5 -2 L 17.5 -2" stroke="#4038b8" stroke-opacity="0.4" stroke-width="8.6" stroke-linecap="round"></path><path d="M 5 -2 L 17.5 -2" stroke="#e4e0ff" stroke-width="6.8" stroke-linecap="round"></path></g><circle r="9.8" fill="url(#tbm_R_0_-hand)" stroke="#4038b8" stroke-opacity="0.32" stroke-width="1.1"></circle><circle cx="1.5" cy="-7.6" r="3.6" fill="#e4e0ff" stroke="#4038b8" stroke-opacity="0.3" stroke-width="1"></circle></g></g></g></g></g></g></g><g class="tbm-sparkles tbm-fx"><g transform="translate(26 46)"><g class="tbm-twinkle tbm-tw-1"><path d="M 0 -8 Q 2.24 -2.24 8 0 Q 2.24 2.24 0 8 Q -2.24 2.24 -8 0 Q -2.24 -2.24 0 -8 Z" fill="#fde68a"></path></g></g><g transform="translate(176 40)"><g class="tbm-twinkle tbm-tw-2"><path d="M 0 -6.5 Q 1.8200000000000003 -1.8200000000000003 6.5 0 Q 1.8200000000000003 1.8200000000000003 0 6.5 Q -1.8200000000000003 1.8200000000000003 -6.5 0 Q -1.8200000000000003 -1.8200000000000003 0 -6.5 Z" fill="#6ee7b7"></path></g></g><g transform="translate(182 116)"><g class="tbm-twinkle tbm-tw-3"><path d="M 0 -5 Q 1.4000000000000001 -1.4000000000000001 5 0 Q 1.4000000000000001 1.4000000000000001 0 5 Q -1.4000000000000001 1.4000000000000001 -5 0 Q -1.4000000000000001 -1.4000000000000001 0 -5 Z" fill="#a5f3fc"></path></g></g><g transform="translate(18 120)"><g class="tbm-twinkle tbm-tw-4"><path d="M 0 -4.5 Q 1.2600000000000002 -1.2600000000000002 4.5 0 Q 1.2600000000000002 1.2600000000000002 0 4.5 Q -1.2600000000000002 1.2600000000000002 -4.5 0 Q -1.2600000000000002 -1.2600000000000002 0 -4.5 Z" fill="#fda4af"></path></g></g></g><g class="tbm-zzz tbm-fx"><g transform="translate(138 28)"><path class="tbm-z tbm-z-1" d="M -5 -5 H 5 L -5 5 H 5"></path></g><g transform="translate(156 10)"><path class="tbm-z tbm-z-2" d="M -3.8 -3.8 H 3.8 L -3.8 3.8 H 3.8"></path></g></g><g class="tbm-dots tbm-fx" transform="translate(146 24)"><rect x="-17" y="-8" width="34" height="16" rx="8" class="tbm-dots-pill"></rect><circle class="tbm-dot tbm-dot-1" cx="-8" r="2.6"></circle><circle class="tbm-dot tbm-dot-2" cx="0" r="2.6"></circle><circle class="tbm-dot tbm-dot-3" cx="8" r="2.6"></circle></g></g></svg>
