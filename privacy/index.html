@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TinkerBuddy privacy policy</title>
+<style>body{font:16px/1.6 system-ui,sans-serif;max-width:760px;margin:40px auto;padding:0 18px;color:#1d1f33}h1{font-size:28px}h2{font-size:19px;margin-top:30px}li{margin:4px 0}small{color:#666}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #e5e6f0;padding:6px 8px;text-align:left;vertical-align:top}</style></head><body>
+<h1>TinkerBuddy privacy policy</h1>
+<small>Last updated 2026-11-26. TinkerBuddy is an independent product, not affiliated with or endorsed by Autodesk. Tinkercad is a trademark of Autodesk, Inc.</small>
+
+<p>TinkerBuddy is a browser extension that coaches people while they design in Tinkercad. It is made for children aged about 8–14, used with a parent or at school, so we collect as little as possible and never sell or advertise.</p>
+
+<h2>The short version</h2>
+<ul>
+<li>No accounts, names, email addresses or passwords from children.</li>
+<li>We never store what a child types or says, TinkerBuddy's answers, or pictures of their design.</li>
+<li>A parent or teacher sees learning progress only if the child enters their family or class code.</li>
+<li>No advertising, no tracking across websites, no selling or renting of data, no AI training on children's data.</li>
+</ul>
+
+<h2>What is sent when a learner asks for help</h2>
+<p>To answer, TinkerBuddy sends to its server: the question text and the last few lines of the conversation; a short text description of the Tinkercad editor (which buttons are on screen, how many shapes are selected); the learner's project plan for the open design (for example "LEGO body: holes underneath"); and, only if workspace pictures are allowed and only when needed (a question about how the design looks, or checking a step that can't be checked from the editor's buttons), one picture of the Tinkercad tab — never other tabs.</p>
+<p>The server passes this to an AI model provider to produce the answer and returns it. <b>The server does not store questions, answers or pictures.</b> It keeps a random install number with a daily count and cost of answers, to enforce spending limits.</p>
+<p>Voice: if the learner presses the talk button, the browser's own speech recogniser turns their voice into text (Chrome sends that audio to Google, Edge to Microsoft, under the browser's privacy terms). TinkerBuddy only ever receives the text. Teachers and parents can switch voice input off.</p>
+
+<h2>Classes and families (only with a code)</h2>
+<p>A teacher or parent can create a class or family and give the learner a short code to type into TinkerBuddy's Settings. Only then, TinkerBuddy also sends <b>learning moments</b> to that adult's private dashboard: that a question was asked, a hint was used, a step was checked, a project part was finished, and which skill was practised (for example "Aligning shapes: on their own"), with the time. It never sends what the learner typed or said, the answers, or pictures. The learner may add a nickname or initials so the adult can tell children apart; real names are not needed.</p>
+<p>The adult can rename or remove a learner, set daily AI limits, pause AI answers, and switch voice input and workspace pictures off. The learner can leave at any time (Settings → Leave), which stops sharing at once. Learning moments are deleted automatically after 90 days; daily spending records after 400 days.</p>
+<p>Adults who create a class or family do not give us their name or email either: they receive a private dashboard code. Keep it safe — anyone with it can see that class's dashboard.</p>
+
+<h2>Who processes the data</h2>
+<table><tr><th>service</th><th>why</th><th>what it receives</th></tr>
+<tr><td>Supabase (hosting, database), USA</td><td>runs TinkerBuddy's server and stores the records described above</td><td>install number, spending counts; for linked learners, learning moments and nickname</td></tr>
+<tr><td>Google (Gemini API, paid tier)</td><td>writes most answers</td><td>the question, editor description, project plan, picture if allowed — not used to train models</td></tr>
+<tr><td>Anthropic (Claude API)</td><td>quick step checks and backup answers</td><td>same as above — not used to train models</td></tr></table>
+<p>We share data with no one else, except if required by law.</p>
+
+<h2>Children, parents and schools</h2>
+<p>We do not knowingly collect personal information from children beyond what is described here. For school use, the school acts on parents' behalf for this educational purpose (as permitted under COPPA) and stays in control of student data; we use it only to provide TinkerBuddy to the school, under the school's direction, and will sign a student data privacy agreement on request. For home use, the parent sets up the family and can see and delete what is kept.</p>
+<p>To delete data: remove the learner from the dashboard, leave the class in Settings, or uninstall the extension (which deletes everything stored on that computer). To have server records deleted sooner, write to <a href="mailto:Sanjit@catalystlogic.ai">Sanjit@catalystlogic.ai</a> with the class or family code; we act within 30 days.</p>
+
+<h2>What stays on the computer</h2>
+<p>Settings, skills progress, project plans and the last few conversation lines are stored in the browser's extension storage on that computer only. Remove the extension, or use Settings → Reset progress, to delete them.</p>
+
+<h2>Security</h2>
+<p>All traffic is encrypted (HTTPS). AI keys are held only on the server. Dashboard codes are stored only as one-way hashes. Database access is limited to the server. If we learn of a breach affecting a class or family, we will tell the adult who created it and, for schools, the school, without undue delay.</p>
+
+<h2>Changes</h2>
+<p>If this policy changes in a way that matters, we will update the date above and say so in the extension before the change applies. Questions: <a href="mailto:Sanjit@catalystlogic.ai">Sanjit@catalystlogic.ai</a>.</p>
+</body></html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex"><title>TinkerBuddy dashboard</title>
+<style>
+:root{--ink:#1d1f33;--sub:#5d6078;--line:#e5e6f0;--bg:#f6f6fb;--card:#fff;--brand:#5446e5;--brand2:#ece9ff;--ok:#1f8a4c;--warn:#b25b00;--bad:#c0322b;
+--l1:#e7e4ff;--l2:#a89ef5;--l3:#5446e5}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg)}
+header{display:flex;align-items:center;gap:12px;padding:14px 24px;background:var(--card);border-bottom:1px solid var(--line)}
+header b{font-size:17px}header .sp{flex:1}.pill{font-size:12px;padding:2px 9px;border-radius:99px;background:var(--brand2);color:var(--brand);font-weight:600}
+main{max-width:1180px;margin:0 auto;padding:24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px}
+h1{font-size:24px;margin:0 0 2px}h2{font-size:16px;margin:0 0 12px}.sub{color:var(--sub);font-size:13px}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}.tile b{display:block;font-size:24px}.tile span{color:var(--sub);font-size:12.5px}
+.code{font:700 26px/1.1 ui-monospace,Menlo,monospace;letter-spacing:2px;color:var(--brand)}
+input,select{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink)}input[type=number]{width:90px}
+button{font:inherit;font-weight:600;padding:8px 14px;border-radius:9px;border:1px solid var(--brand);background:var(--brand);color:#fff;cursor:pointer}
+button.ghost{background:#fff;color:var(--brand)}button.danger{background:#fff;color:var(--bad);border-color:#f0c9c6}button:disabled{opacity:.5}
+table{width:100%;border-collapse:collapse;font-size:14px}th{text-align:left;color:var(--sub);font-weight:600;font-size:12.5px;padding:8px 8px;border-bottom:1px solid var(--line)}
+td{padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}tr.st{cursor:pointer}tr.st:hover td{background:#fafaff}
+.chip{display:inline-block;font-size:12px;padding:1px 8px;border-radius:99px;margin:1px 3px 1px 0;background:#fff3e6;color:var(--warn)}
+.chip.ok{background:#e8f6ee;color:var(--ok)}
+.grid td.lv{width:28px;text-align:center}.lv i{display:inline-block;width:18px;height:18px;border-radius:5px;background:#f1f1f6}
+.lv i.introduced{background:var(--l1)}.lv i.guided{background:var(--l2)}.lv i.independent{background:var(--l3)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin:0 4px 0 12px}
+ul.ins{margin:0;padding-left:18px}ul.ins li{margin:4px 0}
+.detail{background:#fafaff;border-radius:10px;padding:12px 14px;margin:6px 0}
+.hidden{display:none}.msg{color:var(--sub);font-size:13px;min-height:18px}.err{color:var(--bad)}
+.secret{font:600 15px ui-monospace,Menlo,monospace;background:#fff8e1;border:1px dashed #e3c46a;padding:8px 10px;border-radius:8px;word-break:break-all}
+footer{color:var(--sub);font-size:12.5px;text-align:center;padding:10px 24px 30px}
+.vh{position:absolute;left:-9999px}
+</style></head><body>
+<header><b>TinkerBuddy</b><span class="pill" id="kind">Dashboard</span><span class="sp"></span><button class="ghost hidden" id="signout">Sign out</button></header>
+<main>
+  <section id="signin" class="card" style="max-width:520px;margin:40px auto">
+    <h1>Sign in</h1><p class="sub">Enter the private teacher or parent code you were given (it starts with “tb-”).</p>
+    <form id="signinForm" class="row"><label class="vh" for="code">Access code</label><input id="code" autocomplete="off" placeholder="tb-xxxxx-xxxxx-xxxxx-xxxxx" style="flex:1;min-width:260px"><button>Open dashboard</button></form>
+    <p class="msg" id="signinMsg"></p>
+    <details style="margin-top:14px"><summary class="sub">Operator</summary>
+      <form id="adminForm" class="row" style="margin-top:10px"><label class="vh" for="admintok">Admin token</label><input id="admintok" type="password" autocomplete="off" placeholder="Admin token" style="flex:1"><button class="ghost">Manage classes</button></form>
+    </details>
+  </section>
+
+  <section id="admin" class="hidden">
+    <div class="card"><h1>Classes and families</h1><p class="sub">Create one for each teacher’s class or each family. Codes are shown once — send them to the adult.</p>
+      <form id="createForm" class="row" style="margin-top:12px">
+        <select id="ckind"><option value="class">Class (teacher)</option><option value="family">Family (parent)</option></select>
+        <input id="cname" placeholder="Name, e.g. Ms Rivera · Period 3" style="flex:1;min-width:220px">
+        <label class="sub">Per child / day $<input id="cstudent" type="number" step="0.05" min="0" max="2" value="0.25"></label>
+        <label class="sub">Total / day $<input id="ctotal" type="number" step="0.5" min="0" max="50" value="5"></label>
+        <button>Create</button></form>
+      <div id="created" class="hidden" style="margin-top:14px"></div>
+    </div>
+    <div class="card"><h2>All</h2><table><thead><tr><th>Name</th><th>Type</th><th>Join code</th><th>Members</th><th>AI today</th><th>Created</th><th></th></tr></thead><tbody id="classList"></tbody></table></div>
+  </section>
+
+  <section id="dash" class="hidden">
+    <div class="card row" style="justify-content:space-between">
+      <div><h1 id="cname2"></h1><div class="sub" id="csub"></div></div>
+      <div style="text-align:right"><div class="sub" id="joinLabel">Class code</div><div class="code" id="join"></div><div class="sub" id="joinHow"></div></div>
+    </div>
+    <div class="tiles" id="tiles"></div>
+    <div class="card"><h2>This week</h2><ul class="ins" id="insights"></ul></div>
+    <div class="card"><h2 id="peopleTitle">Students</h2><p class="sub">Click a row for details. Times are approximate (5-minute blocks).</p>
+      <table><thead><tr><th>Name</th><th>Last active</th><th>Minutes</th><th>Steps</th><th>Hints / step</th><th>On their own</th><th>Parts done</th><th>Notes</th><th>AI today</th></tr></thead><tbody id="students"></tbody></table></div>
+    <div class="card"><h2>Skills</h2><p class="sub legend">Best level in the last 14 days:<i style="background:var(--l1)"></i>tried with help<i style="background:var(--l2)"></i>guided<i style="background:var(--l3)"></i>on their own</p><div style="overflow:auto"><table class="grid" id="grid"></table></div></div>
+    <div class="card"><h2>Settings</h2>
+      <div class="row"><label class="sub">Per child / day $<input id="sStudent" type="number" step="0.05" min="0" max="2"></label>
+      <label class="sub">Total / day $<input id="sTotal" type="number" step="0.5" min="0" max="50"></label>
+      <button id="saveCaps" class="ghost">Save limits</button>
+      <button id="pause" class="ghost"></button>
+      <button id="rotate" class="ghost">New join code</button></div>
+      <div class="row" style="margin-top:10px"><label class="sub"><input type="checkbox" id="sVoice"> Allow voice input (talk button)</label>
+      <label class="sub"><input type="checkbox" id="sShots"> Allow workspace pictures (better answers about how a design looks)</label></div>
+      <p class="sub">When a limit is reached, or AI is paused, TinkerBuddy keeps working with its free offline lessons. About $0.25 is a long day of designing.</p>
+      <p class="msg" id="setMsg"></p>
+    </div>
+  </section>
+</main>
+<footer>TinkerBuddy never sends what children type or say, or any pictures, to this dashboard — only learning moments (a step checked, a skill practised, a hint) and AI cost. Not affiliated with Autodesk.</footer>
+<script>window.TB_API="https://hvquudvrqqdyccgldrqd.supabase.co/functions/v1/tinkerbuddy";window.TB_SITE="https://sanjitkmisra.github.io/tinkerbuddy";</script>
+<script>
+(function(){
+var base = window.TB_API || location.pathname.replace(/\/dashboard\/?$/, '');
+var $ = function(id){ return document.getElementById(id); };
+function el(tag, text, cls){ var e = document.createElement(tag); if (text !== undefined && text !== null) e.textContent = String(text); if (cls) e.className = cls; return e; }
+function show(id){ ['signin','admin','dash'].forEach(function(s){ $(s).classList.toggle('hidden', s !== id); }); $('signout').classList.toggle('hidden', id === 'signin'); }
+function usd(v){ return '$' + (v < 0.1 ? v.toFixed(3) : v.toFixed(2)); }
+function api(path, body, hdr){ var h = {'content-type':'application/json'}; for (var k in hdr) h[k] = hdr[k];
+  return fetch(base + path, {method:'POST', headers:h, body: JSON.stringify(body || {})}).then(function(r){ return r.json().then(function(j){ j._status = r.status; return j; }); }); }
+var access = localStorage.getItem('tbAccess') || '', adminTok = sessionStorage.getItem('tbAdmin') || '', state = null, open = {};
+
+$('signout').onclick = function(){ localStorage.removeItem('tbAccess'); sessionStorage.removeItem('tbAdmin'); access = adminTok = ''; show('signin'); };
+$('signinForm').onsubmit = function(e){ e.preventDefault(); access = $('code').value.trim(); load(true); };
+$('adminForm').onsubmit = function(e){ e.preventDefault(); adminTok = $('admintok').value.trim(); loadAdmin(true); };
+
+function load(first){
+  api('/v1/dash/summary', {}, {'x-tb-access': access}).then(function(j){
+    if (!j.ok) { if (first) $('signinMsg').textContent = j.error === 'unknown_access_code' ? 'That code didn’t work. Check it and try again.' : 'Couldn’t reach TinkerBuddy (' + j.error + ').'; show('signin'); return; }
+    localStorage.setItem('tbAccess', access); state = j; render(); show('dash');
+  }).catch(function(){ $('signinMsg').textContent = 'Couldn’t reach the TinkerBuddy server.'; });
+}
+function update(body, msg){ $('setMsg').textContent = 'Saving…';
+  api('/v1/dash/update', body, {'x-tb-access': access}).then(function(j){ if (j.ok) { state = j; render(); $('setMsg').textContent = msg || 'Saved.'; } else $('setMsg').textContent = 'Not saved: ' + j.error; }); }
+
+function render(){
+  var c = state.class, fam = c.kind === 'family', w = state.week;
+  $('kind').textContent = fam ? 'Family' : 'Class';
+  $('cname2').textContent = c.name;
+  $('csub').textContent = state.students.length + (fam ? ' child' : ' student') + (state.students.length === 1 ? '' : 's') + ' linked';
+  $('join').textContent = c.joinCode;
+  $('joinLabel').textContent = fam ? 'Family code' : 'Class code';
+  $('joinHow').textContent = 'Type it in TinkerBuddy → Settings → ' + (fam ? 'Family' : 'Class') + ' code';
+  $('peopleTitle').textContent = fam ? 'Children' : 'Students';
+  var tiles = $('tiles'); tiles.textContent = '';
+  [[w.activeStudents + ' / ' + state.students.length, fam ? 'designing this week' : 'students active this week'], [w.minutes, 'minutes designing'], [w.steps, 'steps checked'], [w.partsFinished, 'project parts finished'], [usd(state.aiTodayUsd) + ' / ' + usd(c.classDailyUsd), 'AI cost today / limit']]
+    .forEach(function(t){ var d = el('div', null, 'tile'); d.appendChild(el('b', t[0])); d.appendChild(el('span', t[1])); tiles.appendChild(d); });
+  var ins = $('insights'); ins.textContent = ''; state.insights.forEach(function(s){ ins.appendChild(el('li', s)); });
+  var tb = $('students'); tb.textContent = '';
+  state.students.forEach(function(s){
+    var tr = el('tr', null, 'st');
+    [s.name, s.lastActive || '—', s.minutes, s.steps, s.hintsPerStep === null ? '—' : s.hintsPerStep, s.independence === null ? '—' : Math.round(s.independence * 100) + '%', s.partsFinished].forEach(function(v){ tr.appendChild(el('td', v)); });
+    var notes = el('td'); s.flags.forEach(function(f){ notes.appendChild(el('span', f, 'chip')); }); if (!s.flags.length) notes.appendChild(el('span', 'on track', 'chip ok')); tr.appendChild(notes);
+    tr.appendChild(el('td', usd(s.aiTodayUsd) + ' / ' + usd(s.dailyCapUsd)));
+    tr.onclick = function(){ open[s.installId] = !open[s.installId]; render(); };
+    tb.appendChild(tr);
+    if (open[s.installId]) {
+      var dtr = el('tr'), td = el('td'); td.colSpan = 9; var d = el('div', null, 'detail');
+      var ul = el('ul', null, 'ins'); s.insights.forEach(function(x){ ul.appendChild(el('li', x)); }); d.appendChild(ul);
+      if (s.strengths.length) d.appendChild(el('p', 'On their own: ' + s.strengths.join(', '), 'sub'));
+      var r = el('div', null, 'row');
+      var nn = el('input'); nn.value = s.name; nn.maxLength = 24; nn.setAttribute('aria-label', 'Name shown here'); r.appendChild(nn);
+      var bn = el('button', 'Rename', 'ghost'); bn.onclick = function(){ update({student:{installId:s.installId, nickname: nn.value}}); }; r.appendChild(bn);
+      var cap = el('input'); cap.type = 'number'; cap.step = '0.05'; cap.min = '0'; cap.max = '2'; cap.value = s.dailyCapUsd; cap.setAttribute('aria-label', 'Daily AI limit for this child'); r.appendChild(cap);
+      var bc = el('button', 'Set daily limit', 'ghost'); bc.onclick = function(){ update({student:{installId:s.installId, dailyUsd: Number(cap.value)}}); }; r.appendChild(bc);
+      var br = el('button', 'Remove from ' + (fam ? 'family' : 'class'), 'danger'); br.onclick = function(){ if (confirm('Remove ' + s.name + '? Their TinkerBuddy keeps working, but stops sending learning moments here.')) update({student:{installId:s.installId, remove:true}}, 'Removed.'); }; r.appendChild(br);
+      d.appendChild(r); td.appendChild(d); dtr.appendChild(td); tb.appendChild(dtr);
+    }
+  });
+  if (!state.students.length) { var tr0 = el('tr'), td0 = el('td', fam ? 'No child linked yet.' : 'No students yet.'); td0.colSpan = 9; tr0.appendChild(td0); tb.appendChild(tr0); }
+  var g = $('grid'); g.textContent = '';
+  if (!state.skillGrid.length) g.appendChild(el('tr')).appendChild(el('td', 'No skills practised yet.', 'sub'));
+  else {
+    var hr = el('tr'); hr.appendChild(el('th', 'Skill')); state.students.forEach(function(s){ var th = el('th', s.name); th.style.writingMode = 'vertical-rl'; th.style.transform = 'rotate(180deg)'; hr.appendChild(th); }); g.appendChild(hr);
+    state.skillGrid.forEach(function(k){ var tr = el('tr'); tr.appendChild(el('td', k.title));
+      state.students.forEach(function(s){ var td = el('td', null, 'lv'); var lv = k.levels[s.installId]; var i = el('i', null, lv || ''); i.title = s.name + ': ' + (lv || 'not yet'); td.appendChild(i); tr.appendChild(td); }); g.appendChild(tr); });
+  }
+  $('sStudent').value = c.studentDailyUsd; $('sTotal').value = c.classDailyUsd;
+  $('pause').textContent = c.aiPaused ? 'Resume AI answers' : 'Pause AI answers';
+  $('sVoice').checked = c.voiceInput; $('sShots').checked = c.screenshots;
+}
+$('saveCaps').onclick = function(){ update({studentDailyUsd: Number($('sStudent').value), classDailyUsd: Number($('sTotal').value)}); };
+$('sVoice').onchange = function(){ update({voiceInput: $('sVoice').checked}, $('sVoice').checked ? 'Voice input allowed.' : 'Voice input off (applies next time TinkerBuddy opens).'); };
+$('sShots').onchange = function(){ update({screenshots: $('sShots').checked}, $('sShots').checked ? 'Workspace pictures allowed.' : 'Workspace pictures off.'); };
+$('pause').onclick = function(){ update({aiPaused: !state.class.aiPaused}, state.class.aiPaused ? 'AI answers are back on.' : 'Paused: offline lessons only.'); };
+$('rotate').onclick = function(){ if (confirm('Make a new join code? Children already linked stay linked; the old code stops working.')) update({rotateJoin:true}, 'New code ready.'); };
+
+function loadAdmin(first){
+  api('/v1/admin/list', {}, {'x-tb-admin': adminTok}).then(function(j){
+    if (!j.ok) { if (first) $('signinMsg').textContent = 'Admin token not accepted.'; return; }
+    sessionStorage.setItem('tbAdmin', adminTok); show('admin');
+    var tb = $('classList'); tb.textContent = '';
+    j.classes.forEach(function(c){ var tr = el('tr');
+      [c.name, c.kind, c.joinCode, c.members, usd(c.todayUsd), c.created.slice(0,10)].forEach(function(v){ tr.appendChild(el('td', v)); });
+      var td = el('td'); var b = el('button', 'New access code', 'ghost'); b.onclick = function(){ if (confirm('Replace the access code for ' + c.name + '? The old one stops working.')) api('/v1/admin/reset-access', {id:c.id}, {'x-tb-admin': adminTok}).then(function(r){ if (r.ok) showCreated({name:c.name, kind:c.kind, joinCode:c.joinCode, accessCode:r.accessCode}); }); };
+      td.appendChild(b); tr.appendChild(td); tb.appendChild(tr); });
+  });
+}
+function showCreated(r){
+  var d = $('created'); d.textContent = ''; d.classList.remove('hidden');
+  d.appendChild(el('p', 'Send these to the ' + (r.kind === 'family' ? 'parent' : 'teacher') + ' for “' + r.name + '”. The access code is shown only now.'));
+  d.appendChild(el('p', (r.kind === 'family' ? 'Family' : 'Class') + ' code (children type it in TinkerBuddy → Settings): ' + r.joinCode, 'secret'));
+  d.appendChild(el('p', 'Private dashboard code (for the adult only): ' + r.accessCode, 'secret'));
+  d.appendChild(el('p', 'Dashboard: ' + (window.TB_SITE ? window.TB_SITE + '/dashboard' : location.origin + base + '/dashboard'), 'sub'));
+}
+$('createForm').onsubmit = function(e){ e.preventDefault();
+  api('/v1/admin/create', {kind: $('ckind').value, name: $('cname').value, studentDailyUsd: Number($('cstudent').value), classDailyUsd: Number($('ctotal').value)}, {'x-tb-admin': adminTok})
+    .then(function(r){ if (r.ok) { showCreated(r); $('cname').value = ''; loadAdmin(); } }); };
+$('ckind').onchange = function(){ $('ctotal').value = $('ckind').value === 'family' ? 1 : 5; };
+
+if (adminTok) loadAdmin(); else if (access) load(); else show('signin');
+setInterval(function(){ if (!$('dash').classList.contains('hidden') && !Object.keys(open).some(function(k){ return open[k]; })) load(); }, 60000);
+})();
+</script></body></html>

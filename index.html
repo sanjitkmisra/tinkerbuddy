@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TinkerBuddy — an AI design coach for Tinkercad</title>
+<meta name="description" content="TinkerBuddy coaches kids inside Tinkercad: plans their project, points at the right tool, checks each step and explains why. Never does it for them.">
+<style>
+:root{--ink:#1d1f33;--sub:#5d6078;--line:#e5e6f0;--bg:#f6f6fb;--brand:#5446e5;--brand2:#ece9ff}
+*{box-sizing:border-box}body{margin:0;font:16px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:860px;margin:0 auto;padding:34px 20px 50px}
+.hero{background:linear-gradient(135deg,#5446e5,#7b6cf6);color:#fff;border-radius:18px;padding:30px 30px 26px;margin-bottom:22px}
+.hero h1{margin:0 0 6px;font-size:32px}.hero p{margin:0;font-size:18px;opacity:.95}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:18px 0 24px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.card h3{margin:0 0 4px;font-size:16px}.card p{margin:0;color:var(--sub);font-size:14.5px}
+h2{font-size:20px;margin:6px 0 10px}
+.choice{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0}
+.choice label{flex:1;min-width:220px;border:2px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;background:#fff}
+.choice input{margin-right:8px}.choice label:has(input:checked){border-color:var(--brand);background:var(--brand2)}
+input[type=text]{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;width:100%;max-width:420px}
+button{font:inherit;font-weight:700;padding:11px 18px;border-radius:10px;border:0;background:var(--brand);color:#fff;cursor:pointer;margin-top:12px}
+button:disabled{opacity:.5}.sub{color:var(--sub);font-size:14px}.err{color:#c0322b}
+.secret{font:600 17px ui-monospace,Menlo,monospace;background:#fff8e1;border:1px dashed #e3c46a;padding:10px 12px;border-radius:9px;word-break:break-all;margin:6px 0 12px}
+ol li{margin:6px 0}.hidden{display:none}footer{color:var(--sub);font-size:13px;text-align:center;padding:10px}
+a{color:var(--brand)}
+</style></head><body><main>
+<section class="hero"><h1>TinkerBuddy</h1><p>A friendly design coach inside Tinkercad. It plans the project with your child, points at the right tool, checks each step and explains why — and never does it for them.</p></section>
+<div class="grid">
+  <div class="card"><h3>Plans the project</h3><p>Turns “I want a rocket” into 3–6 parts and shows “Part 2 of 5”.</p></div>
+  <div class="card"><h3>Points and checks</h3><p>Rings the exact Tinkercad button, then notices when the step is done.</p></div>
+  <div class="card"><h3>You see progress</h3><p>A private dashboard: skills practised, steps finished, where they got stuck. Never what they type or say.</p></div>
+</div>
+
+<section class="card" id="form">
+  <h2>Start free</h2>
+  <div class="choice">
+    <label><input type="radio" name="kind" value="family" checked>For my family<br><span class="sub">Up to a few kids at home. Daily AI limit $1 for the family.</span></label>
+    <label><input type="radio" name="kind" value="class">For my class<br><span class="sub">Students join with a class code. No student accounts.</span></label>
+  </div>
+  <p><label for="name" class="sub">Name shown on your dashboard (optional)</label><br><input id="name" type="text" maxlength="80" placeholder="e.g. The Lee family, or Ms Rivera · Period 3"></p>
+  <p class="sub"><label><input id="agree" type="checkbox"> I'm the parent/guardian or teacher, and I've read the <a href="privacy" id="privacyLink">privacy policy</a>.</label></p>
+  <button id="go">Create my free dashboard</button>
+  <p id="msg" class="sub"></p>
+</section>
+
+<section class="card hidden" id="done">
+  <h2>You're set up</h2>
+  <p><b id="whoCode">Family code</b> — your child types this in TinkerBuddy → Settings:</p><div class="secret" id="join"></div>
+  <p><b>Your private dashboard code</b> — for you only. Save it now; we can't show it again:</p><div class="secret" id="access"></div>
+  <button id="copy" type="button">Copy both</button>
+  <ol>
+    <li>Install TinkerBuddy in Chrome or Edge, open a Tinkercad design and click the TinkerBuddy button.</li>
+    <li>In TinkerBuddy's Settings, type the <span id="whoCode2">family</span> code (and initials if you like), then Join.</li>
+    <li>Open your <a id="dashLink" href="dashboard">dashboard</a> and enter your private code.</li>
+  </ol>
+</section>
+<footer>No accounts, ads or tracking. Not affiliated with Autodesk. Tinkercad is a trademark of Autodesk, Inc. · <a href="privacy" id="privacyLink2">Privacy</a></footer>
+</main>
+<script>window.TB_API="https://hvquudvrqqdyccgldrqd.supabase.co/functions/v1/tinkerbuddy";window.TB_SITE="https://sanjitkmisra.github.io/tinkerbuddy";</script>
+<script>
+(function(){
+var api = window.TB_API || location.pathname.replace(/\/(signup|start)\/?$/, '');
+var site = window.TB_SITE || api;
+var $ = function(id){ return document.getElementById(id); };
+$('privacyLink').href = site + '/privacy'; $('privacyLink2').href = site + '/privacy'; $('dashLink').href = site + '/dashboard';
+$('go').onclick = function(){
+  var kind = document.querySelector('input[name=kind]:checked').value;
+  if (!$('agree').checked) { $('msg').textContent = 'Please tick the box first.'; $('msg').className = 'err'; return; }
+  $('go').disabled = true; $('msg').className = 'sub'; $('msg').textContent = 'Creating…';
+  fetch(api + '/v1/signup', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({kind: kind, name: $('name').value, agree: true})})
+    .then(function(r){ return r.json(); }).then(function(j){
+      $('go').disabled = false;
+      if (!j.ok) { $('msg').className = 'err'; $('msg').textContent = j.error === 'too_many_tries' ? 'Too many tries from here. Please wait an hour.' : j.error === 'signup_busy' ? 'Lots of sign-ups today — please try again tomorrow.' : 'Something went wrong (' + j.error + ').'; return; }
+      $('join').textContent = j.joinCode; $('access').textContent = j.accessCode;
+      var fam = j.kind === 'family'; $('whoCode').textContent = fam ? 'Family code' : 'Class code'; $('whoCode2').textContent = fam ? 'family' : 'class';
+      try { localStorage.setItem('tbAccess', j.accessCode); } catch (e) {}
+      $('form').classList.add('hidden'); $('done').classList.remove('hidden');
+    }).catch(function(){ $('go').disabled = false; $('msg').className = 'err'; $('msg').textContent = 'Couldn’t reach TinkerBuddy. Try again.'; });
+};
+$('copy').onclick = function(){ navigator.clipboard.writeText('TinkerBuddy ' + $('whoCode').textContent + ': ' + $('join').textContent + '\nPrivate dashboard code: ' + $('access').textContent).then(function(){ $('copy').textContent = 'Copied'; }); };
+})();
+</script></body></html>
