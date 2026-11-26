@@ -86,8 +86,8 @@ section{padding:76px 0}
 .choice label:has(input:checked){border-color:var(--indigo);background:var(--lav1)}
 @media(max-width:560px){.choice{grid-template-columns:1fr}}
 .field{font-weight:600;font-size:15px;color:var(--ink2)}
-input[type=text]{font:inherit;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;width:100%;margin-top:6px;background:#fcfcff}
-input[type=text]:focus{outline:3px solid rgba(99,102,241,.25);border-color:var(--indigo5)}
+input[type=text],input[type=email]{font:inherit;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;width:100%;margin-top:6px;background:#fcfcff}
+input[type=text]:focus,input[type=email]:focus{outline:3px solid rgba(99,102,241,.25);border-color:var(--indigo5)}
 .agree{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--ink2);margin:16px 0 4px}.agree input{margin-top:5px;accent-color:var(--indigo);width:17px;height:17px}
 .sub{color:var(--sub);font-size:15px}.err{color:#c0322b;font-weight:600}
 .secret{font:700 20px ui-monospace,Menlo,Consolas,monospace;background:var(--amber1);border:1.5px dashed #e3c46a;padding:12px 14px;border-radius:12px;word-break:break-all;margin:6px 0 16px;letter-spacing:.02em}
@@ -155,7 +155,7 @@ footer .brand{justify-content:center;margin-bottom:10px;font-size:18px}footer .b
 </div></div></section>
 
 <section id="start"><div class="wrap start">
-  <div class="side"><span class="eyebrow">Start free</span><h2>Set up in a minute.</h2><p>Pick family or class. You’ll get a code for your child or students, and a private code for your dashboard. No account, no email.</p><img src="assets/mascot-explain.svg" alt="" onerror="this.remove()"></div>
+  <div class="side"><span class="eyebrow">Start free</span><h2>Set up in a minute.</h2><p>Pick family or class and enter your email. We send you a link to finish; then you get a code for your child or students and a private code for your dashboard. Children never need an email or account.</p><img src="assets/mascot-explain.svg" alt="" onerror="this.remove()"></div>
   <div>
     <div class="card" id="form">
       <div class="choice">
@@ -164,9 +164,17 @@ footer .brand{justify-content:center;margin-bottom:10px;font-size:18px}footer .b
       </div>
       <label class="field" for="name">Name shown on your dashboard (optional)</label>
       <input id="name" type="text" maxlength="80" placeholder="e.g. The Lee family, or Ms Rivera · Period 3">
+      <label class="field" for="email" style="display:block;margin-top:14px">Your email (adults only: for your link to finish, and to sign in later)</label>
+      <input id="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com">
+      <div id="ts" style="margin-top:14px"></div>
       <label class="agree"><input id="agree" type="checkbox"><span>I’m the parent/guardian or teacher, and I’ve read the <a href="privacy" id="privacyLink3">privacy policy</a>.</span></label>
       <button class="btn btn-primary" id="go" style="margin-top:12px">Create my free dashboard</button>
       <p id="msg" class="sub"></p>
+    </div>
+    <div class="card hidden" id="sent">
+      <h3 style="font-size:26px">Check your email 📬</h3>
+      <p>We sent a link to <b id="sentTo"></b>. Open it within 30 minutes to finish setting up and see your codes.</p>
+      <p class="sub">Nothing there after a few minutes? Check spam, or <a href="#start" id="again">try again</a>. One free family per email: if you already have one, the email has a link to its dashboard instead.</p>
     </div>
     <div class="card hidden" id="done">
       <h3 style="font-size:26px">You’re set up 🎉</h3>
@@ -198,7 +206,7 @@ footer .brand{justify-content:center;margin-bottom:10px;font-size:18px}footer .b
   <div class="brand"><img src="assets/mark.svg" alt="" onerror="this.remove()">TinkerBuddy</div>
   No accounts, ads or tracking. Not affiliated with or endorsed by Autodesk. Tinkercad is a trademark of Autodesk, Inc. · <a href="privacy" id="privacyLink2">Privacy</a>
 </div></footer>
-<script>window.TB_API="https://api.tinkerbuddy.app";window.TB_SITE="https://www.tinkerbuddy.app";</script>
+<script>window.TB_API="https://api.tinkerbuddy.app";window.TB_SITE="https://www.tinkerbuddy.app";window.TB_TURNSTILE="0x4AAAAAAGUslFm7jGYZ-Udh";</script>
 <script>
 (function(){
 var api = window.TB_API || location.pathname.replace(/\/(signup|start)\/?$/, '');
@@ -206,21 +214,45 @@ var site = window.TB_SITE || api;
 var $ = function(id){ return document.getElementById(id); };
 ['privacyLink','privacyLink2','privacyLink3','privacyLink4'].forEach(function(id){ $(id).href = site + '/privacy'; });
 $('dashLink').href = site + '/dashboard';
+var ERRORS = {too_many_tries: 'Too many tries from here. Please wait and try later.', signup_busy: 'Lots of sign-ups today. Please try again tomorrow.', bot_check: 'The quick check didn’t pass. Please try again.', bad_email: 'Please enter your email address.', link_expired: 'That link has expired or was already used. Start again below.', already_have_family: 'This email already has a free family. Open your dashboard and use “Email me a link” to sign in.', too_many_classes: 'This email has the most classes allowed. Write to us if you need more.', signup_closed: 'Sign-up is closed for now.'};
+function fail(e){ $('msg').className = 'err'; $('msg').textContent = ERRORS[e] || ('Something went wrong (' + e + ').'); }
+function cards(id){ ['form','sent','done'].forEach(function(c){ $(c).classList.toggle('hidden', c !== id); }); $(id).scrollIntoView({behavior:'smooth', block:'center'}); }
+function codes(j){
+  $('join').textContent = j.joinCode; $('access').textContent = j.accessCode;
+  var fam = j.kind === 'family'; $('whoCode').textContent = fam ? 'Family code' : 'Class code'; $('whoCode2').textContent = fam ? 'family' : 'class';
+  try { localStorage.setItem('tbAccess', j.accessCode); } catch (e) {}
+  cards('done');
+}
+// Bot check (Cloudflare Turnstile), when the site was built with a site key.
+var tsToken = '', tsId = null;
+if (window.TB_TURNSTILE) {
+  window.tbTsReady = function(){ tsId = turnstile.render('#ts', {sitekey: window.TB_TURNSTILE, callback: function(t){ tsToken = t; }, 'expired-callback': function(){ tsToken = ''; }}); };
+  var tss = document.createElement('script'); tss.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=tbTsReady&render=explicit'; tss.async = true; document.head.appendChild(tss);
+}
 $('go').onclick = function(){
   var kind = document.querySelector('input[name=kind]:checked').value;
   if (!$('agree').checked) { $('msg').textContent = 'Please tick the box first.'; $('msg').className = 'err'; return; }
-  $('go').disabled = true; $('msg').className = 'sub'; $('msg').textContent = 'Creating…';
-  fetch(api + '/v1/signup', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({kind: kind, name: $('name').value, agree: true})})
+  if (window.TB_TURNSTILE && !tsToken) { $('msg').textContent = 'Please finish the quick check above first.'; $('msg').className = 'err'; return; }
+  $('go').disabled = true; $('msg').className = 'sub'; $('msg').textContent = 'Sending…';
+  fetch(api + '/v1/signup', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({kind: kind, name: $('name').value, email: $('email').value.trim(), agree: true, turnstile: tsToken})})
     .then(function(r){ return r.json(); }).then(function(j){
-      $('go').disabled = false;
-      if (!j.ok) { $('msg').className = 'err'; $('msg').textContent = j.error === 'too_many_tries' ? 'Too many tries from here. Please wait an hour.' : j.error === 'signup_busy' ? 'Lots of sign-ups today — please try again tomorrow.' : 'Something went wrong (' + j.error + ').'; return; }
-      $('join').textContent = j.joinCode; $('access').textContent = j.accessCode;
-      var fam = j.kind === 'family'; $('whoCode').textContent = fam ? 'Family code' : 'Class code'; $('whoCode2').textContent = fam ? 'family' : 'class';
-      try { localStorage.setItem('tbAccess', j.accessCode); } catch (e) {}
-      $('form').classList.add('hidden'); $('done').classList.remove('hidden');
-      $('done').scrollIntoView({behavior:'smooth', block:'center'});
+      $('go').disabled = false; tsToken = ''; if (window.turnstile && tsId !== null) turnstile.reset(tsId);
+      if (!j.ok) return fail(j.error);
+      $('msg').textContent = '';
+      if (j.sent) { $('sentTo').textContent = $('email').value.trim(); cards('sent'); return; }
+      codes(j);
     }).catch(function(){ $('go').disabled = false; $('msg').className = 'err'; $('msg').textContent = 'Couldn’t reach TinkerBuddy. Try again.'; });
 };
+$('again').onclick = function(){ cards('form'); };
+// Opened from the email: finish sign-up and show the codes.
+var confirmLink = /#confirm=([a-f0-9]{48})/.exec(location.hash);
+if (confirmLink) {
+  history.replaceState(null, '', location.pathname + location.search + '#start');
+  $('msg').className = 'sub'; $('msg').textContent = 'Finishing your sign-up…'; cards('form');
+  fetch(api + '/v1/signup/confirm', {method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({token: confirmLink[1]})})
+    .then(function(r){ return r.json(); }).then(function(j){ if (j.ok) codes(j); else fail(j.error); })
+    .catch(function(){ $('msg').className = 'err'; $('msg').textContent = 'Couldn’t reach TinkerBuddy. Reload this page to try again.'; });
+}
 $('copy').onclick = function(){ navigator.clipboard.writeText('TinkerBuddy ' + $('whoCode').textContent + ': ' + $('join').textContent + '\nPrivate dashboard code: ' + $('access').textContent).then(function(){ $('copy').textContent = 'Copied'; }); };
 })();
 </script></body></html>

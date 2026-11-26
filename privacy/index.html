@@ -8,7 +8,7 @@
 
 <h2>The short version</h2>
 <ul>
-<li>No accounts, names, email addresses or passwords from children.</li>
+<li>No accounts, names, email addresses or passwords from children. Only the parent or teacher who sets up a family or class gives an email address, for sign-in links.</li>
 <li>We never store what a child types or says, TinkerBuddy's answers, or pictures of their design.</li>
 <li>A parent or teacher sees learning progress only if the child enters their family or class code.</li>
 <li>No advertising, no tracking across websites, no selling or renting of data, no AI training on children's data.</li>
@@ -22,11 +22,13 @@
 <h2>Classes and families (only with a code)</h2>
 <p>A teacher or parent can create a class or family and give the learner a short code to type into TinkerBuddy's Settings. Only then, TinkerBuddy also sends <b>learning moments</b> to that adult's private dashboard: that a question was asked, a hint was used, a step was checked, a project part was finished, and which skill was practised (for example "Aligning shapes: on their own"), with the time. It never sends what the learner typed or said, the answers, or pictures. The learner may add a nickname or initials so the adult can tell children apart; real names are not needed.</p>
 <p>The adult can rename or remove a learner, set daily AI limits, pause AI answers, and switch voice input and workspace pictures on or off (both start off for classes, on for families). The learner can leave at any time (Settings → Leave), which stops sharing at once. Learning moments are deleted automatically after 90 days; daily spending records after 400 days.</p>
-<p>Adults who create a class or family do not give us their name or email either: they receive a private dashboard code. Keep it safe — anyone with it can see that class's dashboard.</p>
+<p>Adults who create a class or family give us an email address (not their name). We use it only to send the link that finishes setting up, sign-in links when they ask for one, and, if they later choose a paid plan, messages about that plan. No marketing email, and we never share it. They also receive a private dashboard code. Keep it safe — anyone with it can see that class's dashboard. Sign-up and email sign-in forms use a bot check (Cloudflare Turnstile) so nobody can create accounts or send emails automatically.</p>
 
 <h2>Who processes the data</h2>
 <table><tr><th>service</th><th>why</th><th>what it receives</th></tr>
 <tr><td>Supabase (hosting, database), USA</td><td>runs TinkerBuddy's server and stores the records described above</td><td>install number, spending counts; for linked learners, learning moments and nickname</td></tr>
+<tr><td>Cloudflare, USA</td><td>carries every request to TinkerBuddy's server (our api. address), limits abuse, and runs the bot check on adults' sign-up and sign-in forms</td><td>network address and the request on its way through (not stored by us); for the bot check, browser signals Cloudflare uses to tell people from bots</td></tr>
+<tr><td>Resend (email delivery), USA</td><td>sends adults their set-up and sign-in links</td><td>the adult's email address and the email itself</td></tr>
 <tr><td>Anthropic (Claude API), USA</td><td>writes every answer and project plan</td><td>the question, editor description, project plan, picture if allowed. Anthropic does not use this data to train its models.</td></tr>
 <tr><td>The learner's browser (Google for Chrome, Microsoft for Edge)</td><td>turns speech into text, only if voice input is on</td><td>the audio, sent by the browser itself under the browser's own privacy terms; TinkerBuddy receives only the text</td></tr></table>
 <p>We share data with no one else, except if required by law.</p>
@@ -38,6 +40,8 @@
 <tr><td>Install number with daily count and cost of answers</td><td>400 days (spending limits and billing)</td></tr>
 <tr><td>Nickname and class/family membership</td><td>until the learner leaves, is removed, or the class/family is deleted</td></tr>
 <tr><td>Dashboard code</td><td>stored only as a one-way hash, until the class/family is deleted</td></tr>
+<tr><td>Adult's email address</td><td>until the class/family is deleted</td></tr>
+<tr><td>Set-up and sign-in links; dashboard sign-in sessions</td><td>stored only as one-way hashes; links work once within 30 minutes and are deleted after a day; sessions end after 30 days</td></tr>
 <tr><td>Request logs at our host (time, network address, which page, result; no content)</td><td>a few days</td></tr></table>
 
 <h2>AI, and what TinkerBuddy tells children</h2>

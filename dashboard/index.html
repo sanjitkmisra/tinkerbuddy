@@ -37,6 +37,12 @@ footer{color:var(--sub);font-size:12.5px;text-align:center;padding:10px 24px 30p
     <h1>Sign in</h1><p class="sub">Enter the private teacher or parent code you were given (it starts with “tb-”).</p>
     <form id="signinForm" class="row"><label class="vh" for="code">Access code</label><input id="code" autocomplete="off" placeholder="tb-xxxxx-xxxxx-xxxxx-xxxxx" style="flex:1;min-width:260px"><button>Open dashboard</button></form>
     <p class="msg" id="signinMsg"></p>
+    <div style="margin-top:18px;border-top:1px solid #e4e2f3;padding-top:14px">
+      <p class="sub" style="margin-top:0">Lost your code? If you set up with an email, we’ll send you a sign-in link.</p>
+      <form id="emailForm" class="row"><label class="vh" for="email">Email</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com" style="flex:1;min-width:220px"><button class="ghost">Email me a link</button></form>
+      <div id="ts" style="margin-top:10px"></div>
+      <p class="msg" id="emailMsg"></p>
+    </div>
     <details style="margin-top:14px"><summary class="sub">Operator</summary>
       <form id="adminForm" class="row" style="margin-top:10px"><label class="vh" for="admintok">Admin token</label><input id="admintok" type="password" autocomplete="off" placeholder="Admin token" style="flex:1"><button class="ghost">Manage classes</button></form>
     </details>
@@ -79,7 +85,7 @@ footer{color:var(--sub);font-size:12.5px;text-align:center;padding:10px 24px 30p
   </section>
 </main>
 <footer>TinkerBuddy never sends what children type or say, or any pictures, to this dashboard — only learning moments (a step checked, a skill practised, a hint) and AI cost. Not affiliated with Autodesk.</footer>
-<script>window.TB_API="https://api.tinkerbuddy.app";window.TB_SITE="https://www.tinkerbuddy.app";</script>
+<script>window.TB_API="https://api.tinkerbuddy.app";window.TB_SITE="https://www.tinkerbuddy.app";window.TB_TURNSTILE="0x4AAAAAAGUslFm7jGYZ-Udh";</script>
 <script>
 (function(){
 var base = window.TB_API || location.pathname.replace(/\/dashboard\/?$/, '');
@@ -179,7 +185,30 @@ $('createForm').onsubmit = function(e){ e.preventDefault();
     .then(function(r){ if (r.ok) { showCreated(r); $('cname').value = ''; loadAdmin(); } }); };
 $('ckind').onchange = function(){ $('ctotal').value = $('ckind').value === 'family' ? 1 : 5; };
 
-if (adminTok) loadAdmin(); else if (access) load(); else show('signin');
+// Bot check (Cloudflare Turnstile) for the email form, when the site was built with a site key.
+var tsToken = '', tsId = null;
+if (window.TB_TURNSTILE) {
+  window.tbTsReady = function(){ tsId = turnstile.render('#ts', {sitekey: window.TB_TURNSTILE, callback: function(t){ tsToken = t; }, 'expired-callback': function(){ tsToken = ''; }}); };
+  var tss = document.createElement('script'); tss.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=tbTsReady&render=explicit'; tss.async = true; document.head.appendChild(tss);
+}
+$('emailForm').onsubmit = function(e){ e.preventDefault();
+  if (window.TB_TURNSTILE && !tsToken) { $('emailMsg').textContent = 'Please finish the quick check above first.'; return; }
+  $('emailMsg').textContent = 'Sending…';
+  api('/v1/signin', {email: $('email').value.trim(), turnstile: tsToken}).then(function(j){
+    tsToken = ''; if (window.turnstile && tsId !== null) turnstile.reset(tsId);
+    $('emailMsg').textContent = j.ok ? 'If that email has a TinkerBuddy dashboard, a sign-in link is on its way. Check your inbox (and spam) in a minute.' : j.error === 'bad_email' ? 'That doesn’t look like an email address.' : j.error === 'too_many_tries' ? 'Too many tries. Please wait and try later.' : j.error === 'bot_check' ? 'The check didn’t pass. Please try again.' : j.error === 'email_off' ? 'Email sign-in isn’t switched on yet. Use your code above.' : 'Couldn’t send (' + j.error + ').';
+  }).catch(function(){ $('emailMsg').textContent = 'Couldn’t reach TinkerBuddy. Try again.'; });
+};
+// Opened from a sign-in email: the link's token becomes a 30-day session (kept like the access code).
+var signinLink = /#signin=([a-f0-9]{48})/.exec(location.hash);
+if (signinLink) {
+  history.replaceState(null, '', location.pathname + location.search);
+  show('signin'); $('signinMsg').textContent = 'Signing you in…';
+  api('/v1/signin/confirm', {token: signinLink[1]}).then(function(j){
+    if (j.ok) { access = j.session; $('signinMsg').textContent = ''; load(true); }
+    else $('signinMsg').textContent = 'That sign-in link has expired or was already used. Ask for a new one below.';
+  }).catch(function(){ $('signinMsg').textContent = 'Couldn’t reach the TinkerBuddy server.'; });
+} else if (adminTok) loadAdmin(); else if (access) load(); else show('signin');
 setInterval(function(){ if (!$('dash').classList.contains('hidden') && !Object.keys(open).some(function(k){ return open[k]; })) load(); }, 60000);
 })();
 </script></body></html>
