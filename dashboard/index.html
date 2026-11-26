@@ -66,6 +66,10 @@ footer{color:var(--sub);font-size:12.5px;text-align:center;padding:10px 24px 30p
       <div><h1 id="cname2"></h1><div class="sub" id="csub"></div></div>
       <div style="text-align:right"><div class="sub" id="joinLabel">Class code</div><div class="code" id="join"></div><div class="sub" id="joinHow"></div></div>
     </div>
+    <div class="card row hidden" id="planCard" style="justify-content:space-between;align-items:center">
+      <div><h2 style="margin:0" id="planName"></h2><div class="sub" id="planInfo"></div></div>
+      <div style="text-align:right"><button id="upgrade" class="hidden"></button><button id="manage" class="ghost hidden">Manage billing</button><div class="sub" id="upgradeInfo"></div><p class="msg" id="planMsg"></p></div>
+    </div>
     <div class="tiles" id="tiles"></div>
     <div class="card"><h2>This week</h2><ul class="ins" id="insights"></ul></div>
     <div class="card"><h2 id="peopleTitle">Students</h2><p class="sub">Click a row for details. Times are approximate (5-minute blocks).</p>
@@ -110,8 +114,31 @@ function load(first){
 function update(body, msg){ $('setMsg').textContent = 'Saving…';
   api('/v1/dash/update', body, {'x-tb-access': access}).then(function(j){ if (j.ok) { state = j; render(); $('setMsg').textContent = msg || 'Saved.'; } else $('setMsg').textContent = 'Not saved: ' + j.error; }); }
 
+function renderPlan(){
+  var p = state.plan, fam = state.class.kind === 'family';
+  if (!p) { $('planCard').classList.add('hidden'); return; }
+  $('planCard').classList.remove('hidden');
+  $('planName').textContent = p.name + ' plan';
+  var used = 0; for (var k in p.answersToday) used = Math.max(used, p.answersToday[k]);
+  $('planInfo').textContent = p.children + ' of ' + p.childrenMax + (fam ? ' children' : ' students') + ' · ' + p.answersPerChild + ' AI answers per ' + (fam ? 'child' : 'student') + ' a day (most used today: ' + used + ')' + (p.until ? ' · paid until ' + new Date(p.until).toLocaleDateString() : '');
+  $('upgrade').classList.toggle('hidden', !p.upgrade);
+  $('manage').classList.toggle('hidden', !p.billing);
+  if (p.upgrade) { $('upgrade').textContent = 'Upgrade to ' + p.upgrade.name + ' · ' + p.upgrade.price; $('upgradeInfo').textContent = 'Up to ' + p.upgrade.children + (fam ? ' children' : ' students') + ', ' + p.upgrade.answersPerChild + ' answers each a day. Cancel any time.'; }
+  else $('upgradeInfo').textContent = '';
+}
+function goBilling(path, btn){
+  btn.disabled = true; $('planMsg').textContent = 'Opening Stripe…';
+  api(path, {}, {'x-tb-access': access}).then(function(j){
+    btn.disabled = false;
+    if (j.ok && j.url) { location.href = j.url; return; }
+    $('planMsg').textContent = j.error === 'already_paid' ? 'This plan is already paid.' : j.error === 'billing_off' ? 'Paid plans aren’t open yet.' : 'Couldn’t open billing (' + j.error + '). Try again.';
+  }).catch(function(){ btn.disabled = false; $('planMsg').textContent = 'Couldn’t reach TinkerBuddy.'; });
+}
+$('upgrade').onclick = function(){ goBilling('/v1/dash/checkout', $('upgrade')); };
+$('manage').onclick = function(){ goBilling('/v1/dash/billing', $('manage')); };
 function render(){
   var c = state.class, fam = c.kind === 'family', w = state.week;
+  renderPlan();
   $('kind').textContent = fam ? 'Family' : 'Class';
   $('cname2').textContent = c.name;
   $('csub').textContent = state.students.length + (fam ? ' child' : ' student') + (state.students.length === 1 ? '' : 's') + ' linked';
@@ -209,6 +236,11 @@ if (signinLink) {
     else $('signinMsg').textContent = 'That sign-in link has expired or was already used. Ask for a new one below.';
   }).catch(function(){ $('signinMsg').textContent = 'Couldn’t reach the TinkerBuddy server.'; });
 } else if (adminTok) loadAdmin(); else if (access) load(); else show('signin');
+// Back from Stripe Checkout: the plan turns on when Stripe tells the server (usually within seconds).
+if (/#paid/.test(location.hash)) {
+  history.replaceState(null, '', location.pathname + location.search);
+  setTimeout(function(){ if (access) { $('planMsg').textContent = 'Thank you! Your plan is starting…'; load(); setTimeout(function(){ if (access) load(); }, 5000); } }, 1500);
+}
 setInterval(function(){ if (!$('dash').classList.contains('hidden') && !Object.keys(open).some(function(k){ return open[k]; })) load(); }, 60000);
 })();
 </script></body></html>
