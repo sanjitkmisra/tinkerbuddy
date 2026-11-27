@@ -126,12 +126,12 @@ function renderPlan(){
   var p = state.plan, fam = state.class.kind === 'family';
   if (!p) { $('planCard').classList.add('hidden'); return; }
   $('planCard').classList.remove('hidden');
-  $('planName').textContent = p.name + ' plan';
+  $('planName').textContent = p.name + ' plan' + (p.classesCovered > 1 ? ' · covers all ' + p.classesCovered + ' of your classes' : '');
   var used = 0; for (var k in p.answersToday) used = Math.max(used, p.answersToday[k]);
   $('planInfo').textContent = p.children + ' of ' + p.childrenMax + (fam ? ' children' : ' students') + ' · ' + p.answersPerChild + ' AI answers per ' + (fam ? 'child' : 'student') + ' a day (most used today: ' + used + ')' + (p.until ? ' · paid until ' + new Date(p.until).toLocaleDateString() : '') + pilotText(p);
   $('upgrade').classList.toggle('hidden', !p.upgrade);
   $('manage').classList.toggle('hidden', !p.billing);
-  if (p.upgrade) { $('upgrade').textContent = 'Upgrade to ' + p.upgrade.name + ' · ' + p.upgrade.price; $('upgradeInfo').textContent = 'Up to ' + p.upgrade.children + (fam ? ' children' : ' students') + ', ' + p.upgrade.answersPerChild + ' answers each a day. Cancel any time.'; }
+  if (p.upgrade) { $('upgrade').textContent = 'Upgrade to ' + p.upgrade.name + ' · ' + p.upgrade.price; $('upgradeInfo').textContent = 'Up to ' + p.upgrade.children + (fam ? ' children' : ' students') + (fam ? '' : ' across all your classes') + ', ' + p.upgrade.answersPerChild + ' answers each a day. Cancel any time.'; }
   else $('upgradeInfo').textContent = '';
 }
 function goBilling(path, btn){
