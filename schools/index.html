@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>TinkerBuddy for schools and IT</title><link rel="icon" href="https://www.tinkerbuddy.app/icon-128.png">
+<style>body{font:16.5px/1.65 Figtree,system-ui,sans-serif;max-width:760px;margin:32px auto 60px;padding:0 18px;color:#252044;background:#f8f8fc;-webkit-font-smoothing:antialiased}h1,h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.015em}h1{font-size:38px;line-height:1.1}h2{font-size:22px;margin-top:34px}a{color:#5048e5}.top{display:flex;align-items:center;gap:10px;font:800 20px "Bricolage Grotesque",system-ui,sans-serif;color:#252044;text-decoration:none;margin-bottom:26px}.top img{width:34px;height:34px}table{background:#fff}li{margin:4px 0}small{color:#666}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #e5e6f0;padding:6px 8px;text-align:left;vertical-align:top}code{background:#ecebfb;padding:1px 5px;border-radius:4px;font-size:14px;word-break:break-all}ol li,ul li{margin:6px 0}</style><style>@font-face{font-family:Figtree;font-style:normal;font-display:swap;font-weight:300 900;src:url(https://www.tinkerbuddy.app/assets/figtree.woff2) format('woff2')}@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-display:swap;font-weight:200 800;src:url(https://www.tinkerbuddy.app/assets/bricolage.woff2) format('woff2')}</style></head><body>
+<a class="top" href="../"><img src="../assets/mark.svg" alt="" onerror="this.remove()">TinkerBuddy</a>
+<h1>TinkerBuddy for schools and IT</h1>
+<small>For teachers, technology coordinators and privacy reviewers. TinkerBuddy is an independent product, not affiliated with or endorsed by Autodesk. Tinkercad is a trademark of Autodesk, Inc.</small>
+
+<p>TinkerBuddy is a Chrome and Microsoft Edge extension that coaches students aged about 8–14 while they design in Tinkercad. It plans the project with them, points at the right button and checks each step. It <b>cannot click, drag, type or change anything</b> in the design: the student does the work.</p>
+
+<h2>At a glance</h2>
+<table>
+<tr><th>question</th><th>answer</th></tr>
+<tr><td>Student accounts</td><td>None. No student names, emails, passwords or logins. Students join a class by typing a 6-character class code; a nickname or initials is optional.</td></tr>
+<tr><td>What is stored about students</td><td>A random install number with daily counts and cost of AI answers; for students in a class, <b>learning moments</b> (a question was asked, a hint used, a step checked, a part finished, a skill practised, with the time). Never what they typed or said, the answers, or pictures.</td></tr>
+<tr><td>Retention</td><td>Learning moments: 90 days, deleted automatically. Usage counts: 400 days. Deletion on request within 30 days.</td></tr>
+<tr><td>Where data is held</td><td>United States: Supabase hosts the database and server. Cloudflare carries requests on their way through and keeps none of their content.</td></tr>
+<tr><td>Who processes data</td><td>Supabase (hosting, database), Cloudflare (network, abuse protection, bot check on teachers' forms), Resend (teachers' sign-in emails), Anthropic (writes the answers; does not train on this data). Voice, if switched on, is turned into text by the student's own browser. Full list and details in the <a href="../privacy/">privacy policy</a>.</td></tr>
+<tr><td>Teacher controls</td><td>Daily AI limits per student and per class, pause AI answers, voice input and workspace pictures on or off (<b>both start off for classes</b>), remove a student.</td></tr>
+<tr><td>Advertising, selling data, AI training on student data</td><td>None.</td></tr>
+<tr><td>Security</td><td>HTTPS everywhere; data encrypted at rest; database reachable only by our server; dashboard codes and sign-in links stored only as one-way hashes; AI keys only on the server, never in the extension.</td></tr>
+<tr><td>Agreements</td><td>We sign your state or district student data privacy agreement (for example the SDPC National DPA). Write to <a href="mailto:privacy@tinkerbuddy.app">privacy@tinkerbuddy.app</a>.</td></tr>
+</table>
+
+<h2>Install it for your students</h2>
+<p>On managed Chromebooks and school computers students usually cannot add extensions themselves, so IT installs TinkerBuddy for them. Extension IDs:</p>
+<ul>
+<li>Chrome Web Store: <i>listed here once the Chrome Web Store approves TinkerBuddy; until then, ask us</i></li>
+<li>Microsoft Edge Add-ons: <i>listed here once Microsoft Edge Add-ons approves TinkerBuddy; until then, ask us</i></li>
+</ul>
+
+<p><b>Google Admin console (Chromebooks and managed Chrome)</b></p>
+<ol>
+<li>Go to Devices → Chrome → Apps &amp; extensions → Users &amp; browsers, and choose the organizational unit for your students (and teachers, so they can try it).</li>
+<li>Add a Chrome app or extension <b>by ID</b>, enter the Chrome Web Store ID above, and choose <b>From the Chrome Web Store</b>.</li>
+<li>Set the installation policy to <b>Force install</b> (or <b>Force install + pin to browser toolbar</b>). Save.</li>
+</ol>
+<p>If your domain blocks extensions by the permissions they request, the list TinkerBuddy asks for is below. If student accounts are set as under 18, Google's third-party access settings may also need TinkerBuddy allowed for those accounts.</p>
+
+<p><b>Microsoft Edge (Intune or Group Policy)</b></p>
+<p>Add this value to the <code>ExtensionInstallForcelist</code> policy (Intune: Settings catalog → Microsoft Edge → Extensions → "Control which extensions are installed silently"):</p>
+<p><code>&lt;Edge Add-ons ID&gt;;https://edge.microsoft.com/extensionwebstorebase/v1/crx</code></p>
+
+<p><b>Google Chrome on Windows or Mac (Group Policy, Intune or a configuration profile)</b></p>
+<p>Add this value to Chrome's <code>ExtensionInstallForcelist</code> policy:</p>
+<p><code>&lt;Chrome Web Store ID&gt;;https://clients2.google.com/service/update2/crx</code></p>
+<p>TinkerBuddy needs Chrome or Edge version 120 or later, on a laptop or desktop. Tablets and phones aren't supported.</p>
+
+<h2>Permissions it asks for, and why</h2>
+<table>
+<tr><th>permission</th><th>why</th></tr>
+<tr><td><code>storage</code></td><td>Keeps settings, skills progress, the project plan and the class code on that computer.</td></tr>
+<tr><td><code>activeTab</code></td><td>Used only for the workspace picture: one picture of the visible Tinkercad tab, when pictures are on and a question needs it. TinkerBuddy checks that the tab is Tinkercad first; it never captures other tabs.</td></tr>
+<tr><td>Site access: <code>https://www.tinkercad.com/*</code></td><td>Shows the coach panel on Tinkercad pages and reads which editor buttons are on screen, so it can point at the right one. It never clicks or types in Tinkercad.</td></tr>
+<tr><td>Site access: <code>https://api.tinkerbuddy.app/*</code></td><td>TinkerBuddy's own server, which writes the answers.</td></tr>
+</table>
+<p>It asks for no access to other websites, browsing history, downloads, the list of open tabs, or other extensions. A keyboard shortcut (Alt+Shift+T) wakes or hides it.</p>
+
+<h2>Addresses to allow on your network</h2>
+<table>
+<tr><th>address</th><th>who needs it</th><th>what for</th></tr>
+<tr><td><code>www.tinkercad.com</code></td><td>students</td><td>Tinkercad itself (and whatever Autodesk asks you to allow for Tinkercad)</td></tr>
+<tr><td><code>api.tinkerbuddy.app</code></td><td>students and teachers</td><td>TinkerBuddy's server (HTTPS, port 443)</td></tr>
+<tr><td><code>www.tinkerbuddy.app</code></td><td>teachers</td><td>sign-up and the class dashboard</td></tr>
+<tr><td><code>challenges.cloudflare.com</code></td><td>teachers</td><td>the bot check on the sign-up and sign-in forms</td></tr>
+<tr><td>email from <code>@tinkerbuddy.app</code></td><td>teachers</td><td>set-up and sign-in links (check your spam filter lets them through)</td></tr>
+</table>
+<p>Voice input, if a teacher switches it on, uses the browser's own speech service (Google for Chrome, Microsoft for Edge). If that is blocked, voice simply doesn't work and students type instead.</p>
+
+<h2>Running a class</h2>
+<ol>
+<li>The teacher creates a class on <a href="../#start">tinkerbuddy.app</a> with their school email and gets a class code and a private dashboard.</li>
+<li>Students open TinkerBuddy's Settings and type the class code. Only then does their learning progress reach the teacher's dashboard.</li>
+<li>The teacher chooses the switches: daily AI limits, voice input, workspace pictures, or pausing AI answers for everyone.</li>
+</ol>
+<p>New classes get a free 6-week pilot for up to 35 students, 20 AI answers per student per day. After that, the Teacher plan is $299 a year per teacher, covering all their classes (up to 150 students). Schools and districts: by invoice, about $5 per student a year. Purchase orders welcome.</p>
+
+<h2>Student privacy law</h2>
+<ul>
+<li><b>COPPA.</b> TinkerBuddy is designed to comply with the Children's Online Privacy Protection Act. For school use, the school consents on parents' behalf for this educational purpose only, as the FTC's guidance permits; we use student data only to provide TinkerBuddy to the school, never commercially. We recommend that the school or district, not only a single teacher, approves TinkerBuddy.</li>
+<li><b>FERPA.</b> We act as a school official with a legitimate educational interest, under the school's direct control of student data, and delete it on request.</li>
+<li><b>State laws and agreements.</b> We will sign your state's or district's data privacy agreement. Our retention policy is in the <a href="../privacy/">privacy policy</a>; a security one-pager is available on request.</li>
+</ul>
+
+<h2>AI and safety</h2>
+<ul>
+<li>Answers come from Anthropic's Claude through our server. Anthropic does not use this data to train its models, and we don't store questions, answers or pictures.</li>
+<li>TinkerBuddy tells students it is an AI program, not a person.</li>
+<li>It only answers about building in Tinkercad, never does the design for the student, refuses unsafe requests, and if a student says they are hurt, scared or bullied, tells them kindly to talk to a teacher, parent or another trusted adult. These behaviours are tested before every release.</li>
+</ul>
+
+<h2>Questions</h2>
+<p>Write to <a href="mailto:privacy@tinkerbuddy.app">privacy@tinkerbuddy.app</a>. Include your school and district name if you want us to sign an agreement.</p>
+</body></html>

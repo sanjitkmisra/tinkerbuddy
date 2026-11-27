@@ -160,7 +160,7 @@ footer .brand{justify-content:center;margin-bottom:10px;font-size:18px}footer .b
     <div class="p"><b>No ads or selling</b><span>No tracking across websites. No AI training on children’s data.</span></div>
     <div class="p"><b>Deleted on time</b><span>Learning moments are deleted after 90 days. Leave or remove at any time.</span></div>
   </div>
-  <p style="margin:26px 0 0;position:relative">Read the full <a href="privacy" id="privacyLink">privacy policy</a>. Schools: we sign student data privacy agreements on request.</p>
+  <p style="margin:26px 0 0;position:relative">Read the full <a href="privacy" id="privacyLink">privacy policy</a>. Schools: see <a href="schools" id="schoolsLink">TinkerBuddy for schools and IT</a> (permissions, network, force-install); we sign student data privacy agreements on request.</p>
 </div></div></section>
 
 <section id="pricing" style="padding-top:20px"><div class="wrap">
@@ -211,14 +211,14 @@ footer .brand{justify-content:center;margin-bottom:10px;font-size:18px}footer .b
     <details><summary>What does it cost?</summary><p>Families: free for up to 2 children, or the Family plan at $59 a year for up to 4. Classes: a free 6-week pilot, then the Teacher plan at $299 a year per teacher, covering all your classes (up to 150 students). Schools: by invoice, about $5 per student a year. Paid plans are always your choice; we never move you onto one. See <a href="#pricing">Pricing</a>.</p></details>
     <details><summary>What do I need?</summary><p>A free Tinkercad account and Chrome or Microsoft Edge on a laptop or desktop. Tablets and phones aren’t supported.</p></details>
     <details><summary>Which AI does it use, and is my child’s data used to train it?</summary><p>Answers come from Anthropic’s Claude, through our own server. Anthropic doesn’t use this data to train its models, and we don’t store the questions, answers or pictures. TinkerBuddy tells children it’s an AI program, not a person.</p></details>
-    <details><summary>Can my school use it?</summary><p>Yes. Create a class, give students the class code and set the switches you want (AI limits, voice, pictures). We’ll sign your district’s student data privacy agreement on request: write to us at the address in the <a href="privacy" id="privacyLink4">privacy policy</a>.</p></details>
+    <details><summary>Can my school use it?</summary><p>Yes. Create a class, give students the class code and set the switches you want (AI limits, voice, pictures). Your IT team can install it for every student: the <a href="schools" id="schoolsLink2">schools and IT guide</a> has the permissions, addresses to allow and force-install steps. We’ll sign your district’s student data privacy agreement on request: write to us at the address in the <a href="privacy" id="privacyLink4">privacy policy</a>.</p></details>
     <details><summary>Is this made by Tinkercad or Autodesk?</summary><p>No. TinkerBuddy is an independent product that works alongside Tinkercad. Tinkercad is a trademark of Autodesk, Inc.</p></details>
   </div>
 </div></section>
 
 <footer><div class="wrap">
   <div class="brand"><img src="assets/mark.svg" alt="" onerror="this.remove()">TinkerBuddy</div>
-  No accounts, ads or tracking. Not affiliated with or endorsed by Autodesk. Tinkercad is a trademark of Autodesk, Inc. · <a href="privacy" id="privacyLink2">Privacy</a>
+  No accounts, ads or tracking. Not affiliated with or endorsed by Autodesk. Tinkercad is a trademark of Autodesk, Inc. · <a href="privacy" id="privacyLink2">Privacy</a> · <a href="schools" id="schoolsLink3">Schools &amp; IT</a>
 </div></footer>
 <script>window.TB_API="https://api.tinkerbuddy.app";window.TB_SITE="https://www.tinkerbuddy.app";window.TB_CONTACT="privacy@tinkerbuddy.app";window.TB_TURNSTILE="0x4AAAAAAGUslFm7jGYZ-Udh";</script>
 <script>
@@ -227,6 +227,7 @@ var api = window.TB_API || location.pathname.replace(/\/(signup|start)\/?$/, '')
 var site = window.TB_SITE || api;
 var $ = function(id){ return document.getElementById(id); };
 ['privacyLink','privacyLink2','privacyLink3','privacyLink4'].forEach(function(id){ $(id).href = site + '/privacy'; });
+['schoolsLink','schoolsLink2','schoolsLink3'].forEach(function(id){ $(id).href = site + '/schools'; });
 // Schools write to us (the contact address is set when the site is built); otherwise the privacy page lists it.
 $('schoolLink').href = window.TB_CONTACT ? 'mailto:' + window.TB_CONTACT + '?subject=TinkerBuddy%20for%20our%20school' : site + '/privacy';
 // A plan's button picks family or class in the form below.
