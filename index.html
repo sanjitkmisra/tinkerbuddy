@@ -92,6 +92,15 @@ input[type=text]:focus,input[type=email]:focus{outline:3px solid rgba(99,102,241
 .sub{color:var(--sub);font-size:15px}.err{color:#c0322b;font-weight:600}
 .secret{font:700 20px ui-monospace,Menlo,Consolas,monospace;background:var(--amber1);border:1.5px dashed #e3c46a;padding:12px 14px;border-radius:12px;word-break:break-all;margin:6px 0 16px;letter-spacing:.02em}
 ol{padding-left:22px}ol li{margin:8px 0}.hidden{display:none!important}
+/* pricing */
+.group{margin-top:26px}.gh{font-size:18px;color:var(--sub);margin:0 0 12px}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.plan{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);border:1px solid var(--line);padding:24px;display:flex;flex-direction:column}
+.plan.hot{box-shadow:0 0 0 2px var(--indigo),var(--shadow)}
+.plan .price{font:800 34px/1.1 var(--display);margin:10px 0 4px;letter-spacing:-.02em}.plan .price span{font:600 15px var(--body);color:var(--sub);letter-spacing:0}
+.plan ul{padding:0;margin:10px 0 18px;list-style:none;flex:1}.plan li{padding:5px 0 5px 24px;position:relative;color:var(--ink2);font-size:15.5px}
+.plan li:before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:800}
+.plan .btn{justify-content:center}
 .soon{display:inline-block;font-size:12.5px;font-weight:700;background:var(--lav1);color:var(--indigo);padding:3px 8px;border-radius:999px;margin-left:6px;vertical-align:1px}
 /* faq */
 .faq{max-width:780px;margin:0 auto}
@@ -105,7 +114,7 @@ footer .brand{justify-content:center;margin-bottom:10px;font-size:18px}footer .b
 </style><style>@font-face{font-family:Figtree;font-style:normal;font-display:swap;font-weight:300 900;src:url(https://www.tinkerbuddy.app/assets/figtree.woff2) format('woff2')}@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-display:swap;font-weight:200 800;src:url(https://www.tinkerbuddy.app/assets/bricolage.woff2) format('woff2')}</style></head><body>
 <nav><div class="wrap">
   <a class="brand" href="#top"><img src="assets/mark.svg" alt="" onerror="this.remove()">TinkerBuddy</a>
-  <div class="links"><a href="#how">How it works</a><a href="#who">Families &amp; classes</a><a href="#privacy">Privacy</a><a href="#start" class="btn btn-primary">Start free</a></div>
+  <div class="links"><a href="#how">How it works</a><a href="#who">Families &amp; classes</a><a href="#privacy">Privacy</a><a href="#pricing">Pricing</a><a href="#start" class="btn btn-primary">Start free</a></div>
 </div></nav>
 
 <header class="hero" id="top"><div class="wrap">
@@ -137,7 +146,7 @@ footer .brand{justify-content:center;margin-bottom:10px;font-size:18px}footer .b
 <section id="who" style="padding-top:20px"><div class="wrap">
   <div class="center"><span class="eyebrow">For families and classes</span><h2>See their progress, not their private words.</h2><p>Give your child or class a short code. You get a private dashboard of learning moments. Never what they type or say.</p></div>
   <div class="two">
-    <div class="aud"><h3>For families</h3><ul><li>Free, with a daily AI limit you control</li><li>Skills they’ve practised and parts they’ve finished</li><li>Pause AI answers, switch voice or pictures off</li><li>Works in Chrome and Microsoft Edge on a laptop or desktop</li></ul><div class="dash"><img src="assets/welcome.jpg" alt="TinkerBuddy welcoming a learner back to their project, with the next part to build" style="object-position:30% 60%" onerror="this.parentNode.remove()"></div></div>
+    <div class="aud"><h3>For families</h3><ul><li>Free for up to 2 children, with a daily AI limit</li><li>Skills they’ve practised and parts they’ve finished</li><li>Pause AI answers, switch voice or pictures off</li><li>Works in Chrome and Microsoft Edge on a laptop or desktop</li></ul><div class="dash"><img src="assets/welcome.jpg" alt="TinkerBuddy welcoming a learner back to their project, with the next part to build" style="object-position:30% 60%" onerror="this.parentNode.remove()"></div></div>
     <div class="aud teach"><h3>For teachers</h3><ul><li>Students join with a class code. No accounts, no emails</li><li>Who’s stuck, hints per step, skills across the class</li><li>Class-wide AI limits, pause, voice and picture switches</li></ul><div class="dash"><img src="assets/dashboard.jpg" alt="Teacher dashboard with minutes, steps checked and a skills grid" onerror="this.parentNode.remove()"></div></div>
   </div>
 </div></section>
@@ -154,13 +163,18 @@ footer .brand{justify-content:center;margin-bottom:10px;font-size:18px}footer .b
   <p style="margin:26px 0 0;position:relative">Read the full <a href="privacy" id="privacyLink">privacy policy</a>. Schools: we sign student data privacy agreements on request.</p>
 </div></div></section>
 
+<section id="pricing" style="padding-top:20px"><div class="wrap">
+  <div class="center" style="margin-bottom:10px"><span class="eyebrow">Pricing</span><h2>Free to start. Simple when you grow.</h2><p>Limits count AI answers, so costs stay predictable. The offline lessons always work, even after the day’s answers are used.</p></div>
+  <div class="group"><h3 class="gh">For families</h3><div class="plans"><div class="plan hot"><h3>Free family</h3><div class="price">$0<span></span></div><ul><li>Up to 2 children</li><li>25 AI answers each a day</li><li>Private dashboard of learning moments</li><li>Pause AI, voice and picture switches</li></ul><a class="btn btn-primary" href="#start" data-kind="family">Start free</a></div><div class="plan"><h3>Family</h3><div class="price">$39<span> a year</span></div><ul><li>Up to 5 children</li><li>120 AI answers each a day</li><li>Everything in Free</li><li>Founding price, kept while you stay</li></ul><a class="btn btn-ghost" href="#start" data-kind="family">Start free · paid plans open soon</a></div></div></div><div class="group"><h3 class="gh">For classes and schools</h3><div class="plans"><div class="plan hot"><h3>Free class pilot</h3><div class="price">$0<span> for 6 weeks</span></div><ul><li>Up to 35 students</li><li>60 AI answers each a day</li><li>The 6 weeks start when the first student joins</li><li>No student accounts or emails</li></ul><a class="btn btn-primary" href="#start" data-kind="class">Start a pilot</a></div><div class="plan"><h3>Classroom</h3><div class="price">$199<span> a year per teacher</span></div><ul><li>Up to 40 students</li><li>40 AI answers each a day</li><li>Everything in the pilot, all year</li><li>Founding price, kept while you stay</li></ul><a class="btn btn-ghost" href="#start" data-kind="class">Start free · paid plans open soon</a></div><div class="plan"><h3>School</h3><div class="price">By invoice<span></span></div><ul><li>Up to 200 students</li><li>40 AI answers each a day</li><li>Purchase orders and invoices</li><li>We sign your student data privacy agreement</li></ul><a class="btn btn-ghost" href="privacy" id="schoolLink">Write to us</a></div></div></div>
+</div></section>
+
 <section id="start"><div class="wrap start">
   <div class="side"><span class="eyebrow">Start free</span><h2>Set up in a minute.</h2><p>Pick family or class and enter your email. We send you a link to finish; then you get a code for your child or students and a private code for your dashboard. Children never need an email or account.</p><img src="assets/mascot-explain.svg" alt="" onerror="this.remove()"></div>
   <div>
     <div class="card" id="form">
       <div class="choice">
-        <label><input type="radio" name="kind" value="family" checked>For my family<span>A few kids at home. Daily AI limit $1 for the family.</span></label>
-        <label><input type="radio" name="kind" value="class">For my class<span>Students join with a class code. No student accounts.</span></label>
+        <label><input type="radio" name="kind" value="family" checked>For my family<span>Free for up to 2 children at home.</span></label>
+        <label><input type="radio" name="kind" value="class">For my class<span>Free 6-week pilot. Students join with a class code.</span></label>
       </div>
       <label class="field" for="name">Name shown on your dashboard (optional)</label>
       <input id="name" type="text" maxlength="80" placeholder="e.g. The Lee family, or Ms Rivera · Period 3">
@@ -194,7 +208,7 @@ footer .brand{justify-content:center;margin-bottom:10px;font-size:18px}footer .b
   <div class="center" style="margin-bottom:24px"><h2>Questions</h2></div>
   <div class="faq">
     <details><summary>Does it do the design for my child?</summary><p>No. It can’t click, drag or change anything in Tinkercad. It plans with them, points at the right button and checks the step. They do the work and keep the credit.</p></details>
-    <details><summary>What does it cost?</summary><p>Free to start for families and classes, with a daily AI limit so costs stay predictable. We’ll tell you well before any paid plans start, and nothing changes without your say.</p></details>
+    <details><summary>What does it cost?</summary><p>Families: free for up to 2 children, or the Family plan at $39 a year for up to 5. Classes: a free 6-week pilot, then the Classroom plan at $199 a year per teacher. Schools: by invoice. Paid plans are always your choice; we never move you onto one. See <a href="#pricing">Pricing</a>.</p></details>
     <details><summary>What do I need?</summary><p>A free Tinkercad account and Chrome or Microsoft Edge on a laptop or desktop. Tablets and phones aren’t supported.</p></details>
     <details><summary>Which AI does it use, and is my child’s data used to train it?</summary><p>Answers come from Anthropic’s Claude, through our own server. Anthropic doesn’t use this data to train its models, and we don’t store the questions, answers or pictures. TinkerBuddy tells children it’s an AI program, not a person.</p></details>
     <details><summary>Can my school use it?</summary><p>Yes. Create a class, give students the class code and set the switches you want (AI limits, voice, pictures). We’ll sign your district’s student data privacy agreement on request: write to us at the address in the <a href="privacy" id="privacyLink4">privacy policy</a>.</p></details>
@@ -206,13 +220,17 @@ footer .brand{justify-content:center;margin-bottom:10px;font-size:18px}footer .b
   <div class="brand"><img src="assets/mark.svg" alt="" onerror="this.remove()">TinkerBuddy</div>
   No accounts, ads or tracking. Not affiliated with or endorsed by Autodesk. Tinkercad is a trademark of Autodesk, Inc. · <a href="privacy" id="privacyLink2">Privacy</a>
 </div></footer>
-<script>window.TB_API="https://api.tinkerbuddy.app";window.TB_SITE="https://www.tinkerbuddy.app";window.TB_TURNSTILE="0x4AAAAAAGUslFm7jGYZ-Udh";</script>
+<script>window.TB_API="https://api.tinkerbuddy.app";window.TB_SITE="https://www.tinkerbuddy.app";window.TB_CONTACT="privacy@tinkerbuddy.app";window.TB_TURNSTILE="0x4AAAAAAGUslFm7jGYZ-Udh";</script>
 <script>
 (function(){
 var api = window.TB_API || location.pathname.replace(/\/(signup|start)\/?$/, '');
 var site = window.TB_SITE || api;
 var $ = function(id){ return document.getElementById(id); };
 ['privacyLink','privacyLink2','privacyLink3','privacyLink4'].forEach(function(id){ $(id).href = site + '/privacy'; });
+// Schools write to us (the contact address is set when the site is built); otherwise the privacy page lists it.
+$('schoolLink').href = window.TB_CONTACT ? 'mailto:' + window.TB_CONTACT + '?subject=TinkerBuddy%20for%20our%20school' : site + '/privacy';
+// A plan's button picks family or class in the form below.
+Array.prototype.forEach.call(document.querySelectorAll('.plan a[data-kind]'), function(a){ a.addEventListener('click', function(){ var r = document.querySelector('input[name=kind][value=' + a.getAttribute('data-kind') + ']'); if (r) r.checked = true; }); });
 $('dashLink').href = site + '/dashboard';
 var ERRORS = {too_many_tries: 'Too many tries from here. Please wait and try later.', signup_busy: 'Lots of sign-ups today. Please try again tomorrow.', bot_check: 'The quick check didn’t pass. Please try again.', bad_email: 'Please enter your email address.', link_expired: 'That link has expired or was already used. Start again below.', already_have_family: 'This email already has a free family. Open your dashboard and use “Email me a link” to sign in.', too_many_classes: 'This email has the most classes allowed. Write to us if you need more.', signup_closed: 'Sign-up is closed for now.'};
 function fail(e){ $('msg').className = 'err'; $('msg').textContent = ERRORS[e] || ('Something went wrong (' + e + ').'); }
