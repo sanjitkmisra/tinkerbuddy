@@ -181,7 +181,7 @@ footer .brand{justify-content:center;margin-bottom:10px;font-size:18px}footer .b
       <label class="field" for="email" style="display:block;margin-top:14px">Your email (adults only: for your link to finish, and to sign in later)</label>
       <input id="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com">
       <div id="ts" style="margin-top:14px"></div>
-      <label class="agree"><input id="agree" type="checkbox"><span>I’m the parent/guardian or teacher, and I’ve read the <a href="privacy" id="privacyLink3">privacy policy</a>.</span></label>
+      <label class="agree"><input id="agree" type="checkbox"><span>I’m the parent/guardian or teacher, and I agree to the <a href="terms" id="termsLink">terms</a> and have read the <a href="privacy" id="privacyLink3">privacy policy</a>.</span></label>
       <button class="btn btn-primary" id="go" style="margin-top:12px">Create my free dashboard</button>
       <p id="msg" class="sub"></p>
     </div>
@@ -218,7 +218,7 @@ footer .brand{justify-content:center;margin-bottom:10px;font-size:18px}footer .b
 
 <footer><div class="wrap">
   <div class="brand"><img src="assets/mark.svg" alt="" onerror="this.remove()">TinkerBuddy</div>
-  No accounts, ads or tracking. Not affiliated with or endorsed by Autodesk. Tinkercad is a trademark of Autodesk, Inc. · <a href="privacy" id="privacyLink2">Privacy</a> · <a href="schools" id="schoolsLink3">Schools &amp; IT</a>
+  No accounts, ads or tracking. Not affiliated with or endorsed by Autodesk. Tinkercad is a trademark of Autodesk, Inc. · <a href="privacy" id="privacyLink2">Privacy</a> · <a href="terms" id="termsLink2">Terms</a> · <a href="schools" id="schoolsLink3">Schools &amp; IT</a>
 </div></footer>
 <script>window.TB_API="https://api.tinkerbuddy.app";window.TB_SITE="https://www.tinkerbuddy.app";window.TB_CONTACT="privacy@tinkerbuddy.app";window.TB_TURNSTILE="0x4AAAAAAGUslFm7jGYZ-Udh";</script>
 <script>
@@ -227,6 +227,7 @@ var api = window.TB_API || location.pathname.replace(/\/(signup|start)\/?$/, '')
 var site = window.TB_SITE || api;
 var $ = function(id){ return document.getElementById(id); };
 ['privacyLink','privacyLink2','privacyLink3','privacyLink4'].forEach(function(id){ $(id).href = site + '/privacy'; });
+['termsLink','termsLink2'].forEach(function(id){ $(id).href = site + '/terms'; });
 ['schoolsLink','schoolsLink2','schoolsLink3'].forEach(function(id){ $(id).href = site + '/schools'; });
 // Schools write to us (the contact address is set when the site is built); otherwise the privacy page lists it.
 $('schoolLink').href = window.TB_CONTACT ? 'mailto:' + window.TB_CONTACT + '?subject=TinkerBuddy%20for%20our%20school' : site + '/privacy';

@@ -2,26 +2,26 @@
 <style>body{font:16.5px/1.65 Figtree,system-ui,sans-serif;max-width:760px;margin:32px auto 60px;padding:0 18px;color:#252044;background:#f8f8fc;-webkit-font-smoothing:antialiased}h1,h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.015em}h1{font-size:38px;line-height:1.1}h2{font-size:22px;margin-top:34px}a{color:#5048e5}.top{display:flex;align-items:center;gap:10px;font:800 20px "Bricolage Grotesque",system-ui,sans-serif;color:#252044;text-decoration:none;margin-bottom:26px}.top img{width:34px;height:34px}table{background:#fff}li{margin:4px 0}small{color:#666}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid #e5e6f0;padding:6px 8px;text-align:left;vertical-align:top}code{background:#ecebfb;padding:1px 5px;border-radius:4px;font-size:14px;word-break:break-all}ol li,ul li{margin:6px 0}</style><style>@font-face{font-family:Figtree;font-style:normal;font-display:swap;font-weight:300 900;src:url(https://www.tinkerbuddy.app/assets/figtree.woff2) format('woff2')}@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-display:swap;font-weight:200 800;src:url(https://www.tinkerbuddy.app/assets/bricolage.woff2) format('woff2')}</style></head><body>
 <a class="top" href="../"><img src="../assets/mark.svg" alt="" onerror="this.remove()">TinkerBuddy</a>
 <h1>TinkerBuddy privacy policy</h1>
-<small>Last updated 2026-11-26. TinkerBuddy is an independent product, not affiliated with or endorsed by Autodesk. Tinkercad is a trademark of Autodesk, Inc.</small>
+<small>Last updated 2026-11-27. TinkerBuddy is an independent product, not affiliated with or endorsed by Autodesk. Tinkercad is a trademark of Autodesk, Inc.</small>
 
 <p>TinkerBuddy is a browser extension that coaches people while they design in Tinkercad. It is made for children aged about 8–14, used with a parent or at school, so we collect as little as possible and never sell or advertise.</p>
 
 <h2>The short version</h2>
 <ul>
 <li>No accounts, names, email addresses or passwords from children. Only the parent or teacher who sets up a family or class gives an email address, for sign-in links.</li>
-<li>We never store what a child types or says, TinkerBuddy's answers, or pictures of their design.</li>
+<li>We never store what a child types or says, or pictures of their design. TinkerBuddy's answers aren't stored either, unless someone presses “Report this answer” (then that one answer is kept so we can fix it).</li>
 <li>A parent or teacher sees learning progress only if the child enters their family or class code.</li>
 <li>No advertising, no tracking across websites, no selling or renting of data, no AI training on children's data.</li>
 </ul>
 
 <h2>What is sent when a learner asks for help</h2>
 <p>To answer, TinkerBuddy sends to its server: the question text and the last few lines of the conversation; a short text description of the Tinkercad editor (which buttons are on screen, how many shapes are selected); the learner's project plan for the open design (for example "LEGO body: holes underneath"); and, only if workspace pictures are allowed and only when needed (a question about how the design looks, or checking a step that can't be checked from the editor's buttons), one picture of the Tinkercad tab — never other tabs.</p>
-<p>The server passes this to an AI model provider to produce the answer and returns it. <b>The server does not store questions, answers or pictures.</b> It keeps a random install number with a daily count and cost of answers, to enforce spending limits.</p>
+<p>The server passes this to an AI model provider to produce the answer and returns it. <b>The server does not store questions, answers or pictures.</b> The one exception: if someone presses “Report this answer”, TinkerBuddy's reply (not the question or anything the child typed or said), the reason chosen, the skill and which class or family it came from are kept for up to 90 days so we can review and fix it. It keeps a random install number with a daily count and cost of answers, to enforce spending limits.</p>
 <p>Voice: if the learner presses the talk button, the browser's own speech recogniser turns their voice into text (Chrome sends that audio to Google, Edge to Microsoft, under the browser's privacy terms). TinkerBuddy only ever receives the text. Teachers and parents can switch voice input off.</p>
 
 <h2>Classes and families (only with a code)</h2>
 <p>A teacher or parent can create a class or family and give the learner a short code to type into TinkerBuddy's Settings. Only then, TinkerBuddy also sends <b>learning moments</b> to that adult's private dashboard: that a question was asked, a hint was used, a step was checked, a project part was finished, and which skill was practised (for example "Aligning shapes: on their own"), with the time. It never sends what the learner typed or said, the answers, or pictures. The learner may add a nickname or initials so the adult can tell children apart; real names are not needed.</p>
-<p>The adult can rename or remove a learner, set daily AI limits, pause AI answers, and switch voice input and workspace pictures on or off (both start off for classes, on for families). The learner can leave at any time (Settings → Leave), which stops sharing at once. Learning moments are deleted automatically after 90 days; daily spending records after 400 days.</p>
+<p>The adult can rename or remove a learner, set daily AI limits, pause AI answers, and switch voice input and workspace pictures on or off (both start off for classes, on for families). The learner can leave at any time (Settings → Leave), which stops sharing at once. The adult can delete the whole family or class from the dashboard at any time: its codes, the learners' nicknames, learning moments and reports are deleted at once. Learning moments are deleted automatically after 90 days; daily spending records after 400 days.</p>
 <p>Adults who create a class or family give us an email address (not their name). We use it only to send the link that finishes setting up, sign-in links when they ask for one, and, if they later choose a paid plan, messages about that plan. No marketing email, and we never share it. They also receive a private dashboard code. Keep it safe — anyone with it can see that class's dashboard. Sign-up and email sign-in forms use a bot check (Cloudflare Turnstile) so nobody can create accounts or send emails automatically.</p>
 
 <h2>Who processes the data</h2>
@@ -37,6 +37,7 @@
 <table><tr><th>what</th><th>kept for</th></tr>
 <tr><td>Questions, answers, pictures of the design</td><td>not stored: held in memory only while an answer is written</td></tr>
 <tr><td>Learning moments (for linked learners)</td><td>90 days, then deleted automatically</td></tr>
+<tr><td>A reported TinkerBuddy answer (only when someone presses “Report this answer”)</td><td>90 days, then deleted automatically</td></tr>
 <tr><td>Install number with daily count and cost of answers</td><td>400 days (spending limits and billing)</td></tr>
 <tr><td>Nickname and class/family membership</td><td>until the learner leaves, is removed, or the class/family is deleted</td></tr>
 <tr><td>Dashboard code</td><td>stored only as a one-way hash, until the class/family is deleted</td></tr>

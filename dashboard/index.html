@@ -85,6 +85,9 @@ footer{color:var(--sub);font-size:12.5px;text-align:center;padding:10px 24px 30p
       <label class="sub"><input type="checkbox" id="sShots"> Allow workspace pictures (better answers about how a design looks)</label></div>
       <p class="sub">When a limit is reached, or AI is paused, TinkerBuddy keeps working with its free offline lessons. Your plan sets the most these can be; you can set them lower.</p>
       <p class="msg" id="setMsg"></p>
+      <div class="row" style="margin-top:16px;border-top:1px solid var(--line);padding-top:14px"><button id="delClass" class="danger">Delete</button>
+        <span class="sub" id="delInfo" style="flex:1;min-width:240px">Deletes the codes, the children’s names and all learning history for good. Children’s TinkerBuddy keeps working, without AI answers from this plan.</span></div>
+      <p class="msg" id="delMsg"></p>
     </div>
   </section>
 </main>
@@ -189,12 +192,23 @@ function render(){
   }
   $('sStudent').value = c.studentDailyUsd; $('sTotal').value = c.classDailyUsd;
   $('pause').textContent = c.aiPaused ? 'Resume AI answers' : 'Pause AI answers';
+  $('delClass').textContent = 'Delete this ' + (c.kind === 'family' ? 'family' : 'class');
   $('sVoice').checked = c.voiceInput; $('sShots').checked = c.screenshots;
 }
 $('saveCaps').onclick = function(){ update({studentDailyUsd: Number($('sStudent').value), classDailyUsd: Number($('sTotal').value)}); };
 $('sVoice').onchange = function(){ update({voiceInput: $('sVoice').checked}, $('sVoice').checked ? 'Voice input allowed.' : 'Voice input off (applies next time TinkerBuddy opens).'); };
 $('sShots').onchange = function(){ update({screenshots: $('sShots').checked}, $('sShots').checked ? 'Workspace pictures allowed.' : 'Workspace pictures off.'); };
 $('pause').onclick = function(){ update({aiPaused: !state.class.aiPaused}, state.class.aiPaused ? 'AI answers are back on.' : 'Paused: offline lessons only.'); };
+$('delClass').onclick = function(){
+  var name = state.class.name, what = state.class.kind === 'family' ? 'family' : 'class';
+  var typed = prompt('This deletes ' + name + ' and everything in it, and can’t be undone. Type its name to confirm:');
+  if (typed === null) return;
+  if (typed.trim().toLowerCase() !== name.trim().toLowerCase()) { $('delMsg').textContent = 'The name didn’t match, so nothing was deleted.'; return; }
+  $('delMsg').textContent = 'Deleting…';
+  api('/v1/dash/delete', {confirm: typed}, {'x-tb-access': access}).then(function(j){
+    if (j.ok) { localStorage.removeItem('tbAccess'); access = ''; show('signin'); $('signinMsg').textContent = 'Deleted. The ' + what + ' and its learning history are gone.'; return; }
+    $('delMsg').textContent = j.error === 'cancel_plan_first' ? 'Cancel the paid plan first (Manage billing), then delete.' : 'Not deleted: ' + j.error;
+  }); };
 $('rotate').onclick = function(){ if (confirm('Make a new join code? Children already linked stay linked; the old code stops working.')) update({rotateJoin:true}, 'New code ready.'); };
 
 function loadAdmin(first){
